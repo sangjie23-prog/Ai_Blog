@@ -62,6 +62,12 @@ const routes = [
     name: 'AdminTags',
     component: () => import('../views/Admin/TagManage.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/comments',
+    name: 'AdminComments',
+    component: () => import('../views/Admin/CommentManage.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 

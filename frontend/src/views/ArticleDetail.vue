@@ -19,6 +19,9 @@
         ❤️ 点赞 ({{ article.likeCount || 0 }})
       </button>
     </div>
+
+    <!-- 评论区 -->
+    <CommentForm :article-id="parseInt(route.params.id)" />
   </div>
 
   <!-- 加载中 -->
@@ -37,6 +40,7 @@ import { useRoute } from 'vue-router'
 import { getArticleDetail, likeArticle } from '../api/article'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
+import CommentForm from '../components/CommentForm.vue'
 
 const route = useRoute()
 const article = ref(null)
