@@ -68,4 +68,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         return page(page, wrapper);
     }
+
+    @Override
+    public IPage<Article> getArticlePageByTag(int pageNum, int pageSize, Integer status, String tag) {
+        // 构建分页对象
+        Page<Article> page = new Page<>(pageNum, pageSize);
+
+        // 构建查询条件
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(status != null, Article::getStatus, status)
+               .like(tag != null && !tag.isEmpty(), Article::getTags, tag)
+               .orderByDesc(Article::getCreatedAt);
+
+        return page(page, wrapper);
+    }
 }

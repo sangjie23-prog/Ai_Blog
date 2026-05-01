@@ -23,14 +23,28 @@ public class ArticleController {
      * @param pageNum 页码，默认1
      * @param pageSize 每页数量，默认10
      * @param status 文章状态（可选）：0-草稿，1-已发布
+     * @param keyword 搜索关键词（可选，按标题搜索）
+     * @param tag 标签名称（可选，按标签搜索）
      * @return 分页文章数据
      */
     @GetMapping
     public Result<IPage<Article>> list(
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(required = false) Integer status) {
-        IPage<Article> page = articleService.getArticlePage(pageNum, pageSize, status);
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String tag) {
+        IPage<Article> page;
+        if (tag != null && !tag.isEmpty()) {
+            // 按标签搜索
+            page = articleService.getArticlePageByTag(pageNum, pageSize, status, tag);
+        } else if (keyword != null && !keyword.isEmpty()) {
+            // 按标题关键词搜索
+            page = articleService.getArticlePageWithKeyword(pageNum, pageSize, status, keyword);
+        } else {
+            // 普通分页查询
+            page = articleService.getArticlePage(pageNum, pageSize, status);
+        }
         return Result.success(page);
     }
 

@@ -4,6 +4,7 @@
       <router-link to="/" class="logo">AI Blog</router-link>
       <nav class="nav">
         <router-link to="/">首页</router-link>
+        <router-link to="/search">搜索</router-link>
         <router-link v-if="authStore.isLoggedIn" to="/admin/dashboard">后台</router-link>
         <router-link v-else to="/admin/login">登录</router-link>
         <button class="theme-toggle" @click="themeStore.toggle">

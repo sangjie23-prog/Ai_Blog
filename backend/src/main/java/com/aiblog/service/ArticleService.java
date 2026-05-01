@@ -46,4 +46,14 @@ public interface ArticleService extends IService<Article> {
      * @return 分页结果
      */
     IPage<Article> getArticlePageWithKeyword(int pageNum, int pageSize, Integer status, String keyword);
+
+    /**
+     * 分页查询文章列表（支持标签搜索）
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @param status 文章状态
+     * @param tag 标签名称
+     * @return 分页结果
+     */
+    IPage<Article> getArticlePageByTag(int pageNum, int pageSize, Integer status, String tag);
 }
