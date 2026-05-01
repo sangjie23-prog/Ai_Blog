@@ -1,12 +1,9 @@
 package com.aiblog.common;
 
-import lombok.Data;
-
 /**
  * 统一API响应结果封装
  * @param <T> 响应数据类型
  */
-@Data
 public class Result<T> {
 
     /** 状态码：200成功，其他为失败 */
@@ -19,6 +16,13 @@ public class Result<T> {
     private T data;
 
     private Result() {}
+
+    public int getCode() { return code; }
+    public void setCode(int code) { this.code = code; }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+    public T getData() { return data; }
+    public void setData(T data) { this.data = data; }
 
     /**
      * 成功响应（无数据）

@@ -1,4 +1,4 @@
-import request from './request'
+import request from '../request'
 
 // 获取评论列表
 export function getCommentList(pageNum = 1, pageSize = 10, status = null) {

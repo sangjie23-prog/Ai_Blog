@@ -1,4 +1,4 @@
-import request from './request'
+import request from '../request'
 
 // 获取系统统计数据
 export function getSystemStatistics() {

@@ -7,6 +7,14 @@ spring:
     url: jdbc:mysql://localhost:3306/aiblog_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true
     username: root
     password: 123456
+  ai:
+    deepseek:
+      api-key: sk-7079bbd9a440458c9276821582a5155c
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.3
+          max-tokens: 1000
 
 mybatis-plus:
   configuration:

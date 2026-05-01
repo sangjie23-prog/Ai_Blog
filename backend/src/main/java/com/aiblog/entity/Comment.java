@@ -1,14 +1,12 @@
 package com.aiblog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
 /**
  * 评论实体
  */
-@Data
 @TableName("comment")
 public class Comment {
 
@@ -38,4 +36,21 @@ public class Comment {
     /** 更新时间 */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getArticleId() { return articleId; }
+    public void setArticleId(Long articleId) { this.articleId = articleId; }
+    public String getNickname() { return nickname; }
+    public void setNickname(String nickname) { this.nickname = nickname; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+    public Integer getStatus() { return status; }
+    public void setStatus(Integer status) { this.status = status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

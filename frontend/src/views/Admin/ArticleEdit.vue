@@ -15,7 +15,12 @@
       <!-- 摘要 -->
       <div class="form-group">
         <label for="summary">摘要</label>
-        <textarea id="summary" v-model="form.summary" placeholder="请输入文章摘要（可选）" rows="3"></textarea>
+        <div class="summary-row">
+          <textarea id="summary" v-model="form.summary" placeholder="请输入文章摘要（可选）" rows="3"></textarea>
+          <button type="button" class="ai-btn" @click="handleGenerateSummary" :disabled="aiLoading || !form.content">
+            {{ aiLoading ? '生成中...' : '✨ AI生成摘要' }}
+          </button>
+        </div>
       </div>
 
       <!-- 分类和标签 -->
@@ -26,7 +31,12 @@
         </div>
         <div class="form-group">
           <label for="tags">标签</label>
-          <input id="tags" v-model="form.tags" type="text" placeholder="标签，用逗号分隔" />
+          <div class="tags-row">
+            <input id="tags" v-model="form.tags" type="text" placeholder="标签，用逗号分隔" />
+            <button type="button" class="ai-btn" @click="handleGenerateTags" :disabled="aiLoading || !form.content">
+              {{ aiLoading ? '生成中...' : '✨ AI生成标签' }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -76,6 +86,7 @@ import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import { getAdminArticle, createAdminArticle, updateAdminArticle, publishArticle } from '../../api/admin/article'
+import { generateSummary, generateTags } from '../../api/admin/ai'
 
 const route = useRoute()
 const router = useRouter()
@@ -106,6 +117,7 @@ const form = reactive({
 
 const activeTab = ref('edit')
 const loading = ref(false)
+const aiLoading = ref(false)
 
 // 内容字数
 const contentLength = computed(() => {
@@ -197,6 +209,40 @@ async function handlePublish() {
   }
 }
 
+// AI生成摘要
+async function handleGenerateSummary() {
+  if (!form.content) {
+    alert('请先输入文章内容')
+    return
+  }
+  aiLoading.value = true
+  try {
+    const res = await generateSummary(form.content)
+    form.summary = res.data
+  } catch (error) {
+    alert('生成摘要失败: ' + (error.message || '请检查DeepSeek API配置'))
+  } finally {
+    aiLoading.value = false
+  }
+}
+
+// AI生成标签
+async function handleGenerateTags() {
+  if (!form.content) {
+    alert('请先输入文章内容')
+    return
+  }
+  aiLoading.value = true
+  try {
+    const res = await generateTags(form.content)
+    form.tags = res.data.join(', ')
+  } catch (error) {
+    alert('生成标签失败: ' + (error.message || '请检查DeepSeek API配置'))
+  } finally {
+    aiLoading.value = false
+  }
+}
+
 // 返回
 function goBack() {
   router.push('/admin/articles')
@@ -272,6 +318,43 @@ onMounted(() => {
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--accent-color);
+}
+
+.summary-row,
+.tags-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.summary-row textarea {
+  flex: 1;
+}
+
+.tags-row input {
+  flex: 1;
+}
+
+.ai-btn {
+  padding: 10px 16px;
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.ai-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.ai-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .form-row {
