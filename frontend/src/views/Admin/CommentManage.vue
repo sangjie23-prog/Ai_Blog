@@ -135,26 +135,40 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.comment-manage {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
 .page-title {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-xl);
+  color: var(--text-color);
+  letter-spacing: -0.5px;
 }
 
 .filter-bar {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
 }
 
 .filter-btn {
-  padding: 8px 16px;
+  padding: var(--space-sm) var(--space-lg);
   border: 1px solid var(--border-color);
   background: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.9375rem;
   color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  background-color: var(--hover-bg);
 }
 
 .filter-btn.active {
@@ -166,65 +180,73 @@ onMounted(() => {
 .comment-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 .comment-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  box-shadow: var(--card-shadow);
+}
+
+.comment-card:hover {
+  box-shadow: var(--card-shadow-hover);
 }
 
 .comment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-md);
 }
 
 .comment-info {
   display: flex;
-  gap: 12px;
+  gap: var(--space-lg);
   align-items: center;
 }
 
 .nickname {
   font-weight: 600;
   color: var(--text-color);
+  font-size: 1rem;
 }
 
 .email {
-  font-size: 13px;
+  font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
 .status-badge {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
 .status-0 {
-  background-color: #fff3cd;
+  background-color: rgba(255, 193, 7, 0.15);
   color: #856404;
 }
 
 .status-1 {
-  background-color: #d4edda;
+  background-color: rgba(40, 167, 69, 0.15);
   color: #155724;
 }
 
 .status-2 {
-  background-color: #f8d7da;
+  background-color: rgba(220, 53, 69, 0.15);
   color: #721c24;
 }
 
 .comment-content {
   color: var(--text-color);
   line-height: 1.6;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-md);
+  font-size: 0.9375rem;
 }
 
 .comment-footer {
@@ -234,21 +256,28 @@ onMounted(() => {
 }
 
 .time {
-  font-size: 12px;
+  font-size: 0.8125rem;
   color: var(--text-secondary);
 }
 
 .actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .action-btn {
-  padding: 6px 12px;
+  padding: var(--space-xs) var(--space-md);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.8125rem;
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
 }
 
 .action-btn.approve {
@@ -268,26 +297,36 @@ onMounted(() => {
 
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: var(--space-3xl);
   color: var(--text-secondary);
+  font-size: 1rem;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin-top: 30px;
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
 }
 
 .page-btn {
-  padding: 8px 20px;
+  padding: var(--space-sm) var(--space-xl);
   border: 1px solid var(--border-color);
   background-color: var(--card-bg);
   color: var(--text-color);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
 }
 
 .page-btn:disabled {
@@ -296,7 +335,55 @@ onMounted(() => {
 }
 
 .page-info {
-  font-size: 14px;
+  font-size: 0.9375rem;
   color: var(--text-secondary);
+}
+
+@media (max-width: 767px) {
+  .page-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .filter-bar {
+    gap: var(--space-sm);
+  }
+
+  .filter-btn {
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.875rem;
+  }
+
+  .comment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .comment-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 479px) {
+  .comment-card {
+    padding: var(--space-md);
+  }
+
+  .pagination {
+    gap: var(--space-md);
+  }
+
+  .page-btn {
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.875rem;
+  }
 }
 </style>

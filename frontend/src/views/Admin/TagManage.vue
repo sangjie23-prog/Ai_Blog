@@ -162,7 +162,7 @@ onMounted(() => {
 
 <style scoped>
 .tag-manage {
-  max-width: 1000px;
+  max-width: var(--container-xl);
   margin: 0 auto;
 }
 
@@ -170,34 +170,39 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-xl);
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -0.5px;
 }
 
 .add-btn {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-xl);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   background-color: var(--accent-color);
   color: white;
-  font-size: 14px;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .add-btn:hover {
-  opacity: 0.9;
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 .table-container {
   background-color: var(--card-bg);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .data-table {
@@ -207,65 +212,70 @@ onMounted(() => {
 
 .data-table th,
 .data-table td {
-  padding: 12px 16px;
+  padding: var(--space-md);
   text-align: left;
   border-bottom: 1px solid var(--border-color);
 }
 
 .data-table th {
-  background-color: var(--header-bg);
+  background-color: var(--bg-secondary);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.8125rem;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .data-table td {
-  font-size: 14px;
+  font-size: 0.9375rem;
 }
 
 .data-table td code {
-  background-color: var(--hover-bg);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 13px;
+  background-color: var(--bg-tertiary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
 }
 
 .data-table .actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .btn-edit,
 .btn-delete {
-  padding: 6px 12px;
+  padding: var(--space-xs) var(--space-md);
   border: none;
-  border-radius: 4px;
-  font-size: 13px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
   cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: 500;
 }
 
 .btn-edit {
-  background-color: #e3f2fd;
+  background-color: rgba(25, 118, 210, 0.1);
   color: #1976d2;
 }
 
 .btn-edit:hover {
-  background-color: #bbdefb;
+  background-color: rgba(25, 118, 210, 0.2);
 }
 
 .btn-delete {
-  background-color: #ffebee;
+  background-color: rgba(211, 47, 47, 0.1);
   color: #d32f2f;
 }
 
 .btn-delete:hover {
-  background-color: #ffcdd2;
+  background-color: rgba(211, 47, 47, 0.2);
 }
 
 .empty {
   text-align: center;
   color: var(--text-secondary);
-  padding: 40px !important;
+  padding: var(--space-3xl) !important;
+  font-size: 1rem;
 }
 
 /* 对话框样式 */
@@ -275,81 +285,93 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--overlay-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn var(--transition-base);
 }
 
 .dialog {
   background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  animation: scaleIn var(--transition-base);
 }
 
 .dialog-title {
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-xl);
+  color: var(--text-color);
 }
 
 .dialog-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-lg);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-sm);
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-secondary);
 }
 
 .form-group input {
-  padding: 10px 14px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
   background-color: var(--bg-color);
   color: var(--text-color);
   outline: none;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
 }
 
 .form-group input:focus {
   border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
 .btn-cancel,
 .btn-submit {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-xl);
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .btn-cancel {
-  background-color: var(--hover-bg);
+  background-color: var(--bg-tertiary);
   color: var(--text-color);
+}
+
+.btn-cancel:hover {
+  background-color: var(--hover-bg);
 }
 
 .btn-submit {
@@ -357,8 +379,46 @@ onMounted(() => {
   color: white;
 }
 
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
 .btn-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+  .page-header {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .data-table {
+    font-size: 0.875rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: var(--space-sm);
+  }
+
+  .dialog {
+    padding: var(--space-xl);
+    width: 95%;
+  }
+}
+
+@media (max-width: 479px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .data-table .actions {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
 }
 </style>

@@ -97,105 +97,141 @@ onMounted(() => {
 
 <style scoped>
 .comment-section {
-  margin-top: 40px;
-  padding-top: 30px;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
   border-top: 1px solid var(--border-color);
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-xl);
+  color: var(--text-color);
 }
 
 .comment-list {
-  margin-bottom: 30px;
+  margin-bottom: var(--space-2xl);
 }
 
 .comment-item {
-  padding: 16px;
+  padding: var(--space-lg);
   border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-fast);
+}
+
+.comment-item:hover {
+  background-color: var(--bg-secondary);
 }
 
 .comment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-sm);
 }
 
 .comment-nickname {
   font-weight: 600;
   color: var(--text-color);
+  font-size: 1rem;
 }
 
 .comment-time {
-  font-size: 12px;
+  font-size: 0.8125rem;
   color: var(--text-secondary);
 }
 
 .comment-content {
   color: var(--text-secondary);
   line-height: 1.6;
+  font-size: 0.9375rem;
 }
 
 .empty-state {
   text-align: center;
-  padding: 40px;
+  padding: var(--space-3xl);
   color: var(--text-secondary);
+  font-size: 1rem;
 }
 
 .comment-form {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--card-shadow);
 }
 
 .form-title {
-  font-size: 16px;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-lg);
+  color: var(--text-color);
 }
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-md);
 }
 
 .form-input,
 .form-textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
   background-color: var(--bg-color);
   color: var(--text-color);
   outline: none;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
 }
 
 .form-input:focus,
 .form-textarea:focus {
   border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 .form-textarea {
   resize: vertical;
+  min-height: 100px;
 }
 
 .submit-btn {
-  padding: 10px 24px;
+  padding: var(--space-sm) var(--space-xl);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   background-color: var(--accent-color);
   color: white;
-  font-size: 14px;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 .submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+  .comment-section {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .comment-form {
+    padding: var(--space-lg);
+  }
 }
 </style>
