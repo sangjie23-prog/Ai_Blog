@@ -32,15 +32,27 @@
 
       <!-- 内容编辑区 -->
       <div class="editor-container">
-        <div class="editor-tabs">
-          <button type="button" :class="['tab-btn', { active: activeTab === 'edit' }]" @click="activeTab = 'edit'">编辑</button>
-          <button type="button" :class="['tab-btn', { active: activeTab === 'preview' }]" @click="activeTab = 'preview'">预览</button>
+        <div class="editor-toolbar">
+          <div class="editor-tabs">
+            <button type="button" :class="['tab-btn', { active: activeTab === 'edit' }]" @click="activeTab = 'edit'">编辑</button>
+            <button type="button" :class="['tab-btn', { active: activeTab === 'split' }]" @click="activeTab = 'split'">分屏</button>
+            <button type="button" :class="['tab-btn', { active: activeTab === 'preview' }]" @click="activeTab = 'preview'">预览</button>
+          </div>
+          <div class="editor-info">
+            <span>字数: {{ contentLength }}</span>
+          </div>
         </div>
 
-        <!-- Markdown 编辑器 -->
+        <!-- 纯编辑模式 -->
         <textarea v-show="activeTab === 'edit'" v-model="form.content" class="markdown-editor" placeholder="在此输入 Markdown 内容..." rows="20"></textarea>
 
-        <!-- Markdown 预览 -->
+        <!-- 分屏模式 -->
+        <div v-show="activeTab === 'split'" class="split-view">
+          <textarea v-model="form.content" class="markdown-editor split-editor" placeholder="在此输入 Markdown 内容..." rows="20"></textarea>
+          <div class="markdown-preview split-preview" v-html="previewHtml"></div>
+        </div>
+
+        <!-- 纯预览模式 -->
         <div v-show="activeTab === 'preview'" class="markdown-preview" v-html="previewHtml"></div>
       </div>
 
@@ -61,12 +73,25 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MarkdownIt from 'markdown-it'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
 import { getAdminArticle, createAdminArticle, updateAdminArticle, publishArticle } from '../../api/admin/article'
 
 const route = useRoute()
 const router = useRouter()
 
-const md = new MarkdownIt()
+const md = new MarkdownIt({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre class="hljs"><code>' +
+               hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+               '</code></pre>'
+      } catch (__) {}
+    }
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+  }
+})
 const isEdit = computed(() => !!route.params.id)
 const articleId = computed(() => route.params.id)
 
@@ -81,6 +106,11 @@ const form = reactive({
 
 const activeTab = ref('edit')
 const loading = ref(false)
+
+// 内容字数
+const contentLength = computed(() => {
+  return form.content.length
+})
 
 // Markdown 预览
 const previewHtml = computed(() => {
@@ -256,10 +286,16 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.editor-tabs {
+.editor-toolbar {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--header-bg);
+}
+
+.editor-tabs {
+  display: flex;
 }
 
 .tab-btn {
@@ -275,6 +311,28 @@ onMounted(() => {
 .tab-btn.active {
   color: var(--accent-color);
   border-bottom: 2px solid var(--accent-color);
+}
+
+.editor-info {
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 500px;
+}
+
+.split-editor {
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+}
+
+.split-preview {
+  overflow-y: auto;
+  height: 100%;
 }
 
 .markdown-editor {
@@ -325,6 +383,11 @@ onMounted(() => {
 .markdown-preview :deep(pre code) {
   background: none;
   padding: 0;
+}
+
+.markdown-preview :deep(.hljs) {
+  background: none !important;
+  padding: 0 !important;
 }
 
 .markdown-preview :deep(blockquote) {

@@ -1,4 +1,4 @@
-import request from '../api/request'
+import request from '../request'
 
 /**
  * 获取后台文章列表
