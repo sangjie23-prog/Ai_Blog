@@ -45,6 +45,18 @@ const routes = [
     name: 'AdminArticleEdit',
     component: () => import('../views/Admin/ArticleEdit.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/categories',
+    name: 'AdminCategories',
+    component: () => import('../views/Admin/CategoryManage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/tags',
+    name: 'AdminTags',
+    component: () => import('../views/Admin/TagManage.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
