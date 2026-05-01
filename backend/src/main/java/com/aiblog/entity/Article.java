@@ -40,6 +40,9 @@ public class Article {
     /** 分类ID */
     private Long categoryId;
 
+    /** 标签（逗号分隔） */
+    private String tags;
+
     /** 创建时间 */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

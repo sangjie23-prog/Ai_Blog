@@ -36,4 +36,14 @@ public interface ArticleService extends IService<Article> {
      * @param id 文章ID
      */
     void incrementLikeCount(Long id);
+
+    /**
+     * 分页查询文章列表（支持关键词搜索）
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @param status 文章状态（null表示查询全部）
+     * @param keyword 搜索关键词（标题）
+     * @return 分页结果
+     */
+    IPage<Article> getArticlePageWithKeyword(int pageNum, int pageSize, Integer status, String keyword);
 }

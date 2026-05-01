@@ -54,4 +54,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             updateById(article);
         }
     }
+
+    @Override
+    public IPage<Article> getArticlePageWithKeyword(int pageNum, int pageSize, Integer status, String keyword) {
+        // 构建分页对象
+        Page<Article> page = new Page<>(pageNum, pageSize);
+
+        // 构建查询条件
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(status != null, Article::getStatus, status)
+               .like(keyword != null && !keyword.isEmpty(), Article::getTitle, keyword)
+               .orderByDesc(Article::getCreatedAt);
+
+        return page(page, wrapper);
+    }
 }

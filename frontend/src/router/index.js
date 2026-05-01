@@ -27,6 +27,24 @@ const routes = [
     name: 'Dashboard',
     component: () => import('../views/Admin/Dashboard.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/articles',
+    name: 'AdminArticles',
+    component: () => import('../views/Admin/ArticleList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/articles/new',
+    name: 'AdminArticleNew',
+    component: () => import('../views/Admin/ArticleEdit.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/articles/edit/:id',
+    name: 'AdminArticleEdit',
+    component: () => import('../views/Admin/ArticleEdit.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
