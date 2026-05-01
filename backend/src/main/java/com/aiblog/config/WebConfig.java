@@ -1,0 +1,29 @@
+package com.aiblog.config;
+
+import com.aiblog.interceptor.JwtInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * Web配置类
+ * 注册JWT拦截器，配置需要拦截的路径
+ */
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private JwtInterceptor jwtInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor)
+                // 拦截所有/admin/**路径（后台管理接口）
+                .addPathPatterns("/api/admin/**")
+                // 排除登录接口
+                .excludePathPatterns("/api/auth/**")
+                // 排除前台公开接口
+                .excludePathPatterns("/api/articles/**");
+    }
+}

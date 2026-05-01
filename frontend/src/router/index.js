@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import ArticleDetail from '../views/ArticleDetail.vue'
+import Login from '../views/Admin/Login.vue'
 
 const routes = [
+  // 前台路由
   {
     path: '/',
     name: 'Home',
@@ -12,6 +14,19 @@ const routes = [
     path: '/article/:id',
     name: 'ArticleDetail',
     component: ArticleDetail
+  },
+  // 登录路由
+  {
+    path: '/admin/login',
+    name: 'Login',
+    component: Login
+  },
+  // 后台路由（需要登录）
+  {
+    path: '/admin/dashboard',
+    name: 'Dashboard',
+    component: () => import('../views/Admin/Dashboard.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -21,6 +36,22 @@ const router = createRouter({
   // 滚动到顶部
   scrollBehavior() {
     return { top: 0 }
+  }
+})
+
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  // 检查是否需要登录
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      // 未登录，跳转到登录页
+      next({ name: 'Login', query: { redirect: to.fullPath } })
+    } else {
+      next()
+    }
+  } else {
+    next()
   }
 })
 

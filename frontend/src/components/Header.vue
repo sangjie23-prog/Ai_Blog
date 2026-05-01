@@ -4,6 +4,8 @@
       <router-link to="/" class="logo">AI Blog</router-link>
       <nav class="nav">
         <router-link to="/">首页</router-link>
+        <router-link v-if="authStore.isLoggedIn" to="/admin/dashboard">后台</router-link>
+        <router-link v-else to="/admin/login">登录</router-link>
         <button class="theme-toggle" @click="themeStore.toggle">
           {{ themeStore.isDark ? '☀️' : '🌙' }}
         </button>
@@ -14,8 +16,10 @@
 
 <script setup>
 import { useThemeStore } from '../stores/theme'
+import { useAuthStore } from '../stores/auth'
 
 const themeStore = useThemeStore()
+const authStore = useAuthStore()
 </script>
 
 <style scoped>
