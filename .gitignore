@@ -1,8 +1,12 @@
 # Maven
-target/
+backend/target/
 *.class
 *.jar
 *.war
+
+# Node
+frontend/node_modules/
+frontend/dist/
 
 # IDE
 .idea/
@@ -19,3 +23,7 @@ Thumbs.db
 
 # application-local.yml (可能包含敏感信息)
 application-local.yml
+
+# 临时SQL文件
+backend/src/main/resources/init_tables.sql
+backend/src/main/resources/test_data.sql
