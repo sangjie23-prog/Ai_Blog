@@ -15,6 +15,10 @@ spring:
           model: deepseek-chat
           temperature: 0.3
           max-tokens: 1000
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 mybatis-plus:
   configuration:
@@ -40,9 +44,3 @@ jwt:
 upload:
   path: uploads/images
   max-size: 10485760  # 10MB
-
-spring:
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
