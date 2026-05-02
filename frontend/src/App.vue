@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ 'dark-mode': isDarkMode }">
+  <div id="app" :class="{ 'eye-care-theme': isEyeCareTheme }">
     <Header />
     <main class="main-content">
       <router-view />
@@ -15,10 +15,10 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 
 const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDark)
+const isEyeCareTheme = computed(() => themeStore.isEyeCare)
 
 onMounted(() => {
-  document.documentElement.classList.toggle('dark', isDarkMode.value)
+  document.documentElement.classList.toggle('eye-care', isEyeCareTheme.value)
 })
 </script>
 
@@ -31,7 +31,7 @@ onMounted(() => {
 }
 
 :root {
-  /* Ghost 风格配色 - 浅色模式 */
+  /* 浅色模式配色 */
   --bg-color: #ffffff;
   --bg-secondary: #f6f6f6;
   --bg-tertiary: #eef0f2;
@@ -118,59 +118,86 @@ onMounted(() => {
   --container-2xl: 1400px;
 }
 
-.dark-mode {
-  /* Ghost 风格配色 - 深色模式 */
-  --bg-color: #0d1117;
-  --bg-secondary: #161b22;
-  --bg-tertiary: #21262d;
-  /* 优化文字对比度，确保符合 WCAG AA 级标准 */
-  --text-color: #f0f6fc;
-  --text-secondary: #b0bac4;
-  --text-tertiary: #8b949e;
-  --border-color: #30363d;
-  --border-light: #21262d;
-  --accent-color: #58a6ff;
-  --accent-hover: #79b8ff;
-  --accent-light: rgba(88, 166, 255, 0.15);
-  --card-bg: #161b22;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --header-bg: rgba(13, 17, 23, 0.98);
-  --footer-bg: #010409;
-  --footer-text: #f0f6fc;
-  --code-bg: #1c2128;
-  --code-text: #ff7b72;
-  --hover-bg: #21262d;
-  --success-color: #3fb950;
-  --warning-color: #d29922;
-  --error-color: #f85149;
-  --info-color: #58a6ff;
-  --input-bg: #0d1117;
-  --input-border: #30363d;
-  --input-focus-border: #58a6ff;
-  --btn-primary-bg: #58a6ff;
-  --btn-primary-text: #0d1117;
-  --btn-secondary-bg: #21262d;
-  --btn-secondary-text: #f0f6fc;
-  --tag-bg: #21262d;
-  --tag-text: #b0bac4;
-  --overlay-bg: rgba(0, 0, 0, 0.75);
-  --scrollbar-thumb: #484f58;
-  --scrollbar-track: #161b22;
+/* 护眼深色主题 - 人体工程学设计 */
+.eye-care-theme {
+  /* 护眼深色模式配色 - 减少蓝光，降低视觉疲劳 */
+  /* 背景使用暖色调深灰，避免纯黑造成的强烈对比 */
+  --bg-color: #1a1d23;
+  --bg-secondary: #22262e;
+  --bg-tertiary: #2a2f38;
   
-  /* 提示框配色 - 深色模式（优化对比度） */
-  --alert-success-bg: #1a3a2a;
-  --alert-success-text: #7ee8a0;
-  --alert-success-border: #2d5a3f;
-  --alert-warning-bg: #3d2e1a;
-  --alert-warning-text: #f0c878;
-  --alert-warning-border: #5a4528;
-  --alert-error-bg: #3d1a1a;
-  --alert-error-text: #f88a8a;
-  --alert-error-border: #5a2828;
-  --alert-info-bg: #1a2d3d;
-  --alert-info-text: #78c8f0;
-  --alert-info-border: #28455a;
+  /* 文字使用暖白色，色温约 4000K，减少蓝光 */
+  --text-color: #e8e6e1;
+  --text-secondary: #b8b5ad;
+  --text-tertiary: #8a8780;
+  
+  /* 边框使用低饱和度灰色 */
+  --border-color: #3a3f47;
+  --border-light: #2a2f38;
+  
+  /* 强调色使用暖色调蓝绿，减少刺眼感 */
+  --accent-color: #6b9e8a;
+  --accent-hover: #7db89e;
+  --accent-light: rgba(107, 158, 138, 0.15);
+  
+  /* 卡片背景使用暖深灰，与背景形成微妙层次 */
+  --card-bg: #22262e;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.35);
+  
+  /* 头部和底部背景 */
+  --header-bg: rgba(26, 29, 35, 0.98);
+  --footer-bg: #141619;
+  --footer-text: #e8e6e1;
+  
+  /* 代码块配色 - 暖色调 */
+  --code-bg: #2a2f38;
+  --code-text: #e88a8a;
+  
+  /* 悬停背景 */
+  --hover-bg: #2a2f38;
+  
+  /* 状态颜色 - 降低饱和度 */
+  --success-color: #6b9e6b;
+  --warning-color: #c4a35a;
+  --error-color: #c46b6b;
+  --info-color: #6b8e9e;
+  
+  /* 表单背景 */
+  --input-bg: #1a1d23;
+  --input-border: #3a3f47;
+  --input-focus-border: #6b9e8a;
+  
+  /* 按钮配色 */
+  --btn-primary-bg: #6b9e8a;
+  --btn-primary-text: #1a1d23;
+  --btn-secondary-bg: #2a2f38;
+  --btn-secondary-text: #e8e6e1;
+  
+  /* 标签配色 */
+  --tag-bg: #2a2f38;
+  --tag-text: #b8b5ad;
+  
+  /* 遮罩层 */
+  --overlay-bg: rgba(0, 0, 0, 0.65);
+  
+  /* 滚动条 */
+  --scrollbar-thumb: #4a4f57;
+  --scrollbar-track: #22262e;
+  
+  /* 提示框配色 - 护眼深色模式 */
+  --alert-success-bg: #2a3a2a;
+  --alert-success-text: #8ab88a;
+  --alert-success-border: #3a4a3a;
+  --alert-warning-bg: #3a352a;
+  --alert-warning-text: #c4a87a;
+  --alert-warning-border: #4a453a;
+  --alert-error-bg: #3a2a2a;
+  --alert-error-text: #c48a8a;
+  --alert-error-border: #4a3a3a;
+  --alert-info-bg: #2a353a;
+  --alert-info-text: #8ab0c4;
+  --alert-info-border: #3a454a;
 }
 
 html {
@@ -198,225 +225,241 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 深色模式下文字增强 */
-.dark-mode body {
-  /* 添加微妙的渐变背景，提升视觉层次 */
-  background-image: radial-gradient(ellipse at top, rgba(88, 166, 255, 0.03) 0%, transparent 50%);
-  /* 确保深色模式下文字清晰 */
-  text-shadow: 0 0 1px rgba(240, 246, 252, 0.1);
+/* 护眼模式下文字优化 */
+.eye-care-theme body {
+  /* 微妙的暖色渐变背景，增加视觉层次 */
+  background-image: radial-gradient(ellipse at top, rgba(107, 158, 138, 0.03) 0%, transparent 50%);
 }
 
-/* 深色模式下所有文字清晰度增强 */
-.dark-mode h1,
-.dark-mode h2,
-.dark-mode h3,
-.dark-mode h4,
-.dark-mode h5,
-.dark-mode h6 {
+/* 护眼模式下标题文字 */
+.eye-care-theme h1,
+.eye-care-theme h2,
+.eye-care-theme h3,
+.eye-care-theme h4,
+.eye-care-theme h5,
+.eye-care-theme h6 {
   color: var(--text-color);
   font-weight: 700;
 }
 
-.dark-mode p,
-.dark-mode span,
-.dark-mode div,
-.dark-mode li,
-.dark-mode td,
-.dark-mode th {
+/* 护眼模式下正文文字 */
+.eye-care-theme p,
+.eye-care-theme span,
+.eye-care-theme div,
+.eye-care-theme li,
+.eye-care-theme td,
+.eye-care-theme th {
   color: var(--text-color);
 }
 
-.dark-mode .text-secondary,
-.dark-mode [class*="text-secondary"] {
+/* 护眼模式下次要文字 */
+.eye-care-theme .text-secondary,
+.eye-care-theme [class*="text-secondary"] {
   color: var(--text-secondary) !important;
 }
 
-/* 深色模式下全局元素亮度增强 */
-.dark-mode .status-badge.published {
-  background-color: rgba(63, 185, 80, 0.2) !important;
-  color: #56d364 !important;
+/* 护眼模式下状态徽章 */
+.eye-care-theme .status-badge.published {
+  background-color: rgba(107, 158, 107, 0.2) !important;
+  color: #8ab88a !important;
 }
 
-.dark-mode .status-badge.draft {
-  background-color: rgba(210, 153, 34, 0.2) !important;
-  color: #e3b341 !important;
+.eye-care-theme .status-badge.draft {
+  background-color: rgba(196, 163, 90, 0.2) !important;
+  color: #c4a87a !important;
 }
 
-.dark-mode .btn-edit {
-  background-color: rgba(88, 166, 255, 0.2) !important;
-  color: #58a6ff !important;
+/* 护眼模式下操作按钮 */
+.eye-care-theme .btn-edit {
+  background-color: rgba(107, 158, 138, 0.2) !important;
+  color: #7db89e !important;
 }
 
-.dark-mode .btn-delete {
-  background-color: rgba(248, 81, 73, 0.2) !important;
-  color: #f85149 !important;
+.eye-care-theme .btn-delete {
+  background-color: rgba(196, 107, 107, 0.2) !important;
+  color: #c48a8a !important;
 }
 
-.dark-mode .edit-btn {
-  background-color: #1f6feb !important;
+.eye-care-theme .edit-btn {
+  background-color: #5a8a7a !important;
 }
 
-.dark-mode .publish-btn {
-  background-color: #238636 !important;
+.eye-care-theme .publish-btn {
+  background-color: #6b9e6b !important;
 }
 
-.dark-mode .unpublish-btn {
-  background-color: #9e6a03 !important;
+.eye-care-theme .unpublish-btn {
+  background-color: #a89050 !important;
 }
 
-.dark-mode .delete-btn {
-  background-color: #da3633 !important;
+.eye-care-theme .delete-btn {
+  background-color: #a86b6b !important;
 }
 
-/* 深色模式下表格样式增强 */
-.dark-mode table,
-.dark-mode .data-table,
-.dark-mode .article-table {
+/* 护眼模式下表格 */
+.eye-care-theme table,
+.eye-care-theme .data-table,
+.eye-care-theme .article-table {
   border-color: var(--border-color);
 }
 
-.dark-mode th,
-.dark-mode .data-table th {
+.eye-care-theme th,
+.eye-care-theme .data-table th {
   background-color: var(--bg-secondary) !important;
   color: var(--text-secondary) !important;
 }
 
-.dark-mode td {
+.eye-care-theme td {
   color: var(--text-color) !important;
 }
 
-/* 深色模式下对话框增强 */
-.dark-mode .dialog {
+/* 护眼模式下对话框 */
+.eye-care-theme .dialog {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border-color);
 }
 
-.dark-mode .dialog-overlay {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+.eye-care-theme .dialog-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
-/* 深色模式下空状态增强 */
-.dark-mode .empty-state,
-.dark-mode .empty-msg,
-.dark-mode .empty {
+/* 护眼模式下空状态 */
+.eye-care-theme .empty-state,
+.eye-care-theme .empty-msg,
+.eye-care-theme .empty {
   color: var(--text-secondary) !important;
 }
 
-/* 深色模式下分页增强 */
-.dark-mode .pagination button,
-.dark-mode .page-btn {
+/* 护眼模式下分页 */
+.eye-care-theme .pagination button,
+.eye-care-theme .page-btn {
   background-color: var(--card-bg) !important;
   color: var(--text-color) !important;
   border-color: var(--border-color) !important;
 }
 
-.dark-mode .pagination span,
-.dark-mode .page-info {
+.eye-care-theme .pagination span,
+.eye-care-theme .page-info {
   color: var(--text-secondary) !important;
 }
 
-/* 深色模式下搜索框增强 */
-.dark-mode .search-box {
+/* 护眼模式下搜索框 */
+.eye-care-theme .search-box {
   background-color: var(--card-bg) !important;
   border-color: var(--border-color) !important;
 }
 
-.dark-mode .search-input {
+.eye-care-theme .search-input {
   background-color: var(--input-bg) !important;
   color: var(--text-color) !important;
   border-color: var(--input-border) !important;
 }
 
-.dark-mode .tab-btn {
+.eye-care-theme .tab-btn {
   color: var(--text-secondary) !important;
 }
 
-.dark-mode .tab-btn.active {
+.eye-care-theme .tab-btn.active {
   color: var(--accent-color) !important;
   border-bottom-color: var(--accent-color) !important;
 }
 
-/* 深色模式下表单增强 */
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
+/* 护眼模式下表单 */
+.eye-care-theme input,
+.eye-care-theme textarea,
+.eye-care-theme select {
   background-color: var(--input-bg) !important;
   color: var(--text-color) !important;
   border-color: var(--input-border) !important;
 }
 
-.dark-mode input::placeholder,
-.dark-mode textarea::placeholder {
+.eye-care-theme input::placeholder,
+.eye-care-theme textarea::placeholder {
   color: var(--text-tertiary) !important;
 }
 
-.dark-mode label {
+.eye-care-theme label {
   color: var(--text-secondary) !important;
 }
 
-/* 深色模式下按钮全局增强 */
-.dark-mode button:not(.action-btn):not(.tab-btn):not(.share-btn):not(.like-btn):not(.theme-toggle):not(.theme-toggle-footer):not(.mobile-menu-btn):not(.page-btn):not(.search-btn):not(.new-btn):not(.add-btn):not(.logout-btn):not(.login-btn):not(.submit-btn):not(.clear-btn):not(.btn-cancel):not(.btn-submit):not(.btn-edit):not(.btn-delete):not(.edit-btn):not(.publish-btn):not(.unpublish-btn):not(.delete-btn):not(.publish-btn):not([class*="btn-primary"]):not([class*="btn-secondary"]) {
-  background-color: var(--btn-secondary-bg);
-  color: var(--btn-secondary-text);
-}
-
-/* 深色模式下代码块增强 */
-.dark-mode code {
+/* 护眼模式下代码块 */
+.eye-care-theme code {
   background-color: var(--code-bg) !important;
   color: var(--code-text) !important;
 }
 
-.dark-mode pre {
+.eye-care-theme pre {
   background-color: var(--code-bg) !important;
   border-color: var(--border-color) !important;
 }
 
-/* 深色模式下引用块增强 */
-.dark-mode blockquote {
+/* 护眼模式下引用块 */
+.eye-care-theme blockquote {
   background-color: var(--bg-secondary) !important;
   color: var(--text-color) !important;
   border-left-color: var(--accent-color) !important;
 }
 
-/* 深色模式下图片增强 */
-.dark-mode img {
-  opacity: 0.9;
-  filter: brightness(0.9) contrast(1.1);
+/* 护眼模式下图片优化 - 降低亮度和蓝光 */
+.eye-care-theme img {
+  opacity: 0.92;
+  filter: brightness(0.92) contrast(1.05) saturate(0.9);
 }
 
-/* 深色模式下分割线增强 */
-.dark-mode .article-divider,
-.dark-mode hr {
+/* 护眼模式下分割线 */
+.eye-care-theme .article-divider,
+.eye-care-theme hr {
   background-color: var(--border-color) !important;
   border-color: var(--border-color) !important;
 }
 
-/* 深色模式下加载动画增强 */
-.dark-mode .loading-spinner {
+/* 护眼模式下加载动画 */
+.eye-care-theme .loading-spinner {
   border-color: var(--border-color) !important;
   border-top-color: var(--accent-color) !important;
 }
 
-.dark-mode .loading-text {
+.eye-care-theme .loading-text {
   color: var(--text-secondary) !important;
 }
 
-/* 深色模式下未找到状态增强 */
-.dark-mode .not-found {
+/* 护眼模式下未找到状态 */
+.eye-care-theme .not-found {
   color: var(--text-color) !important;
 }
 
-.dark-mode .not-found-title {
+.eye-care-theme .not-found-title {
   color: var(--text-color) !important;
 }
 
-.dark-mode .not-found-desc {
+.eye-care-theme .not-found-desc {
   color: var(--text-secondary) !important;
 }
 
-.dark-mode .back-link {
+.eye-care-theme .back-link {
   background-color: var(--card-bg) !important;
   color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 护眼模式下提示框 */
+.eye-care-theme .alert {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 护眼模式下卡片和容器 */
+.eye-care-theme .card,
+.eye-care-theme .article-card,
+.eye-care-theme .stat-card,
+.eye-care-theme .menu-card,
+.eye-care-theme .comment-form,
+.eye-care-theme .login-card,
+.eye-care-theme .search-box,
+.eye-care-theme .article-table,
+.eye-care-theme .welcome-card,
+.eye-care-theme .hot-articles-section,
+.eye-care-theme .dashboard-section {
+  background-color: var(--card-bg) !important;
   border-color: var(--border-color) !important;
 }
 
@@ -593,8 +636,8 @@ a:hover {
   border-color: var(--alert-info-border);
 }
 
-/* 深色模式下提示框优化 */
-.dark-mode .alert {
+/* 护眼模式下提示框优化 */
+.eye-care-theme .alert {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 

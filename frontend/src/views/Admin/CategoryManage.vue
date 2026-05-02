@@ -263,21 +263,21 @@ onMounted(() => {
 }
 
 .btn-edit {
-  background-color: rgba(88, 166, 255, 0.15);
-  color: #58a6ff;
+  background-color: rgba(107, 158, 138, 0.15);
+  color: #7db89e;
 }
 
 .btn-edit:hover {
-  background-color: rgba(88, 166, 255, 0.25);
+  background-color: rgba(107, 158, 138, 0.25);
 }
 
 .btn-delete {
-  background-color: rgba(248, 81, 73, 0.15);
-  color: #f85149;
+  background-color: rgba(196, 107, 107, 0.15);
+  color: #c48a8a;
 }
 
 .btn-delete:hover {
-  background-color: rgba(248, 81, 73, 0.25);
+  background-color: rgba(196, 107, 107, 0.25);
 }
 
 .empty {

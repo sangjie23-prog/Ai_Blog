@@ -23,9 +23,9 @@
         <button 
           class="theme-toggle" 
           @click="themeStore.toggle"
-          :aria-label="themeStore.isDark ? '切换到浅色模式' : '切换到深色模式'"
+          :aria-label="themeStore.isEyeCare ? '切换到浅色模式' : '切换到护眼模式'"
         >
-          <span class="theme-icon">{{ themeStore.isDark ? '☀️' : '🌙' }}</span>
+          <span class="theme-icon">{{ themeStore.isEyeCare ? '☀️' : '🌿' }}</span>
         </button>
       </nav>
     </div>

@@ -48,9 +48,9 @@
             <button 
               class="theme-toggle-footer" 
               @click="themeStore.toggle"
-              :aria-label="themeStore.isDark ? '切换到浅色模式' : '切换到深色模式'"
+              :aria-label="themeStore.isEyeCare ? '切换到浅色模式' : '切换到护眼模式'"
             >
-              <span class="theme-icon">{{ themeStore.isDark ? '☀️' : '🌙' }}</span>
+              <span class="theme-icon">{{ themeStore.isEyeCare ? '☀️' : '🌿' }}</span>
             </button>
           </div>
         </div>
@@ -74,9 +74,9 @@ const themeStore = useThemeStore()
   background-image: none;
 }
 
-/* 深色模式下 Footer 背景增强 */
-.dark-mode .footer {
-  background-image: linear-gradient(180deg, rgba(88, 166, 255, 0.02) 0%, transparent 100%);
+/* 护眼模式下 Footer 背景增强 */
+.eye-care-theme .footer {
+  background-image: linear-gradient(180deg, rgba(107, 158, 138, 0.02) 0%, transparent 100%);
 }
 
 .footer-inner {
