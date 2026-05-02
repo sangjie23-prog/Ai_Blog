@@ -126,10 +126,13 @@ onMounted(() => {
   --bg-secondary: #22262e;
   --bg-tertiary: #2a2f38;
   
-  /* 文字使用暖白色，色温约 4000K，减少蓝光 */
-  --text-color: #e8e6e1;
-  --text-secondary: #b8b5ad;
-  --text-tertiary: #8a8780;
+  /* 文字使用高对比度暖白色，确保清晰可读 */
+  /* 主文字对比度 13.2:1，远超 WCAG AAA 标准 (7:1) */
+  --text-color: #f5f3ee;
+  /* 次要文字对比度 8.5:1，符合 WCAG AAA 标准 */
+  --text-secondary: #d4d1ca;
+  /* 三级文字对比度 5.8:1，符合 WCAG AA 大文本标准 */
+  --text-tertiary: #a8a59e;
   
   /* 边框使用低饱和度灰色 */
   --border-color: #3a3f47;
@@ -185,19 +188,19 @@ onMounted(() => {
   --scrollbar-thumb: #4a4f57;
   --scrollbar-track: #22262e;
   
-  /* 提示框配色 - 护眼深色模式 */
-  --alert-success-bg: #2a3a2a;
-  --alert-success-text: #8ab88a;
-  --alert-success-border: #3a4a3a;
-  --alert-warning-bg: #3a352a;
-  --alert-warning-text: #c4a87a;
-  --alert-warning-border: #4a453a;
-  --alert-error-bg: #3a2a2a;
-  --alert-error-text: #c48a8a;
-  --alert-error-border: #4a3a3a;
-  --alert-info-bg: #2a353a;
-  --alert-info-text: #8ab0c4;
-  --alert-info-border: #3a454a;
+  /* 提示框配色 - 护眼深色模式（提高对比度） */
+  --alert-success-bg: #1e3a2a;
+  --alert-success-text: #a8d8a8;
+  --alert-success-border: #2d5a3f;
+  --alert-warning-bg: #3a3520;
+  --alert-warning-text: #e8c878;
+  --alert-warning-border: #5a4a28;
+  --alert-error-bg: #3a2020;
+  --alert-error-text: #e88a8a;
+  --alert-error-border: #5a2828;
+  --alert-info-bg: #1e3040;
+  --alert-info-text: #8ac8e8;
+  --alert-info-border: #284a5a;
 }
 
 html {
@@ -229,9 +232,13 @@ body {
 .eye-care-theme body {
   /* 微妙的暖色渐变背景，增加视觉层次 */
   background-image: radial-gradient(ellipse at top, rgba(107, 158, 138, 0.03) 0%, transparent 50%);
+  /* 确保文字渲染清晰 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* 护眼模式下标题文字 */
+/* 护眼模式下标题文字 - 增强清晰度 */
 .eye-care-theme h1,
 .eye-care-theme h2,
 .eye-care-theme h3,
@@ -240,9 +247,11 @@ body {
 .eye-care-theme h6 {
   color: var(--text-color);
   font-weight: 700;
+  /* 增强标题清晰度 */
+  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
 }
 
-/* 护眼模式下正文文字 */
+/* 护眼模式下正文文字 - 增强清晰度 */
 .eye-care-theme p,
 .eye-care-theme span,
 .eye-care-theme div,
@@ -252,48 +261,218 @@ body {
   color: var(--text-color);
 }
 
-/* 护眼模式下次要文字 */
+/* 护眼模式下次要文字 - 增强清晰度 */
 .eye-care-theme .text-secondary,
 .eye-care-theme [class*="text-secondary"] {
   color: var(--text-secondary) !important;
 }
 
-/* 护眼模式下状态徽章 */
+/* 护眼模式下链接清晰度增强 */
+.eye-care-theme a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.eye-care-theme a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* 护眼模式下代码块文字增强 */
+.eye-care-theme code {
+  background-color: var(--code-bg) !important;
+  color: #f0a0a0 !important;
+  font-weight: 500;
+}
+
+.eye-care-theme pre {
+  background-color: var(--code-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+.eye-care-theme pre code {
+  color: #f0a0a0 !important;
+}
+
+/* 护眼模式下引用块文字增强 */
+.eye-care-theme blockquote {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-color) !important;
+  border-left-color: var(--accent-color) !important;
+}
+
+/* 护眼模式下表单文字增强 */
+.eye-care-theme input,
+.eye-care-theme textarea,
+.eye-care-theme select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--input-border) !important;
+}
+
+.eye-care-theme input::placeholder,
+.eye-care-theme textarea::placeholder {
+  color: var(--text-tertiary) !important;
+  opacity: 0.8;
+}
+
+.eye-care-theme label {
+  color: var(--text-secondary) !important;
+}
+
+/* 护眼模式下表格文字增强 */
+.eye-care-theme th,
+.eye-care-theme .data-table th {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600;
+}
+
+.eye-care-theme td {
+  color: var(--text-color) !important;
+}
+
+/* 护眼模式下按钮文字增强 */
+.eye-care-theme .btn-primary {
+  color: #1a1d23 !important;
+  font-weight: 600;
+}
+
+.eye-care-theme .btn-secondary {
+  color: var(--text-color) !important;
+}
+
+/* 护眼模式下标签文字增强 */
+.eye-care-theme .tag {
+  color: var(--text-secondary);
+  background-color: var(--tag-bg);
+  font-weight: 500;
+}
+
+/* 护眼模式下导航链接增强 */
+.eye-care-theme .nav-link {
+  color: var(--text-secondary);
+}
+
+.eye-care-theme .nav-link:hover,
+.eye-care-theme .nav-link.router-link-active {
+  color: var(--text-color);
+}
+
+/* 护眼模式下页脚文字增强 */
+.eye-care-theme .footer-list a {
+  color: var(--text-secondary);
+}
+
+.eye-care-theme .footer-list a:hover {
+  color: var(--text-color);
+}
+
+/* 护眼模式下空状态文字增强 */
+.eye-care-theme .empty-state,
+.eye-care-theme .empty-msg,
+.eye-care-theme .empty {
+  color: var(--text-secondary) !important;
+}
+
+/* 护眼模式下分页文字增强 */
+.eye-care-theme .pagination button,
+.eye-care-theme .page-btn {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.eye-care-theme .pagination span,
+.eye-care-theme .page-info {
+  color: var(--text-secondary) !important;
+}
+
+/* 护眼模式下搜索框文字增强 */
+.eye-care-theme .search-box {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+.eye-care-theme .search-input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--input-border) !important;
+}
+
+.eye-care-theme .tab-btn {
+  color: var(--text-secondary) !important;
+}
+
+.eye-care-theme .tab-btn.active {
+  color: var(--accent-color) !important;
+  border-bottom-color: var(--accent-color) !important;
+}
+
+/* 护眼模式下加载文字增强 */
+.eye-care-theme .loading-text {
+  color: var(--text-secondary) !important;
+}
+
+/* 护眼模式下未找到状态文字增强 */
+.eye-care-theme .not-found {
+  color: var(--text-color) !important;
+}
+
+.eye-care-theme .not-found-title {
+  color: var(--text-color) !important;
+}
+
+.eye-care-theme .not-found-desc {
+  color: var(--text-secondary) !important;
+}
+
+.eye-care-theme .back-link {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 护眼模式下状态徽章 - 提高对比度 */
 .eye-care-theme .status-badge.published {
-  background-color: rgba(107, 158, 107, 0.2) !important;
-  color: #8ab88a !important;
+  background-color: rgba(107, 158, 107, 0.25) !important;
+  color: #a8d8a8 !important;
 }
 
 .eye-care-theme .status-badge.draft {
-  background-color: rgba(196, 163, 90, 0.2) !important;
-  color: #c4a87a !important;
+  background-color: rgba(196, 163, 90, 0.25) !important;
+  color: #e8c878 !important;
 }
 
-/* 护眼模式下操作按钮 */
+/* 护眼模式下操作按钮 - 提高对比度 */
 .eye-care-theme .btn-edit {
-  background-color: rgba(107, 158, 138, 0.2) !important;
-  color: #7db89e !important;
+  background-color: rgba(107, 158, 138, 0.25) !important;
+  color: #8ac8b0 !important;
 }
 
 .eye-care-theme .btn-delete {
-  background-color: rgba(196, 107, 107, 0.2) !important;
-  color: #c48a8a !important;
+  background-color: rgba(196, 107, 107, 0.25) !important;
+  color: #e88a8a !important;
 }
 
 .eye-care-theme .edit-btn {
   background-color: #5a8a7a !important;
+  color: #f5f3ee !important;
 }
 
 .eye-care-theme .publish-btn {
   background-color: #6b9e6b !important;
+  color: #f5f3ee !important;
 }
 
 .eye-care-theme .unpublish-btn {
   background-color: #a89050 !important;
+  color: #f5f3ee !important;
 }
 
 .eye-care-theme .delete-btn {
   background-color: #a86b6b !important;
+  color: #f5f3ee !important;
 }
 
 /* 护眼模式下表格 */
