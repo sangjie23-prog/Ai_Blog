@@ -615,4 +615,241 @@ onMounted(() => {
     display: none;
   }
 }
+
+/* 护眼模式优化 - 提高文字清晰度和可读性 */
+.eye-care-theme .article-detail {
+  /* 优化文字渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 护眼模式下标题优化 */
+.eye-care-theme .article-title {
+  color: #f5f3ee !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 1px rgba(245, 243, 238, 0.15);
+  letter-spacing: -0.3px;
+}
+
+/* 护眼模式下元信息优化 */
+.eye-care-theme .meta-item {
+  color: #d4d1ca !important;
+  font-weight: 500;
+}
+
+.eye-care-theme .meta-icon {
+  opacity: 0.85;
+}
+
+/* 护眼模式下标签优化 */
+.eye-care-theme .article-tag {
+  color: #d4d1ca !important;
+  background-color: rgba(107, 158, 138, 0.2) !important;
+  border: 1px solid rgba(107, 158, 138, 0.3);
+  font-weight: 500;
+}
+
+/* 护眼模式下正文内容优化 */
+.eye-care-theme .article-content {
+  color: #f5f3ee !important;
+  font-size: 1.125rem;
+  line-height: 1.9;
+  letter-spacing: 0.2px;
+}
+
+.eye-care-theme .article-content :deep(p) {
+  color: #f5f3ee !important;
+  margin-bottom: 1.5rem;
+  line-height: 1.9;
+}
+
+/* 护眼模式下标题层级优化 */
+.eye-care-theme .article-content :deep(h1) {
+  color: #f5f3ee !important;
+  font-size: 1.875rem;
+  font-weight: 700 !important;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom-color: rgba(107, 158, 138, 0.4) !important;
+  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
+}
+
+.eye-care-theme .article-content :deep(h2) {
+  color: #f5f3ee !important;
+  font-size: 1.625rem;
+  font-weight: 700 !important;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
+}
+
+.eye-care-theme .article-content :deep(h3) {
+  color: #f5f3ee !important;
+  font-size: 1.375rem;
+  font-weight: 600 !important;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
+}
+
+.eye-care-theme .article-content :deep(h4) {
+  color: #f5f3ee !important;
+  font-size: 1.25rem;
+  font-weight: 600 !important;
+  margin-top: 1.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.eye-care-theme .article-content :deep(h5),
+.eye-care-theme .article-content :deep(h6) {
+  color: #f5f3ee !important;
+  font-weight: 600 !important;
+}
+
+/* 护眼模式下链接优化 */
+.eye-care-theme .article-content :deep(a) {
+  color: #7db89e !important;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(125, 184, 158, 0.4);
+  text-underline-offset: 3px;
+  transition: all 0.2s ease;
+}
+
+.eye-care-theme .article-content :deep(a:hover) {
+  color: #8ac8b0 !important;
+  text-decoration-color: rgba(125, 184, 158, 0.7);
+}
+
+/* 护眼模式下引用块优化 */
+.eye-care-theme .article-content :deep(blockquote) {
+  background-color: rgba(107, 158, 138, 0.08) !important;
+  border-left-color: #6b9e8a !important;
+  color: #e8e6e1 !important;
+  font-style: italic;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  line-height: 1.8;
+}
+
+.eye-care-theme .article-content :deep(blockquote p) {
+  color: #e8e6e1 !important;
+}
+
+/* 护眼模式下列表优化 */
+.eye-care-theme .article-content :deep(ul),
+.eye-care-theme .article-content :deep(ol) {
+  color: #f5f3ee !important;
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.eye-care-theme .article-content :deep(li) {
+  color: #f5f3ee !important;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+}
+
+.eye-care-theme .article-content :deep(li::marker) {
+  color: #6b9e8a;
+}
+
+/* 护眼模式下表格优化 */
+.eye-care-theme .article-content :deep(table) {
+  border-color: rgba(58, 63, 71, 0.8) !important;
+  margin-bottom: 1.5rem;
+}
+
+.eye-care-theme .article-content :deep(th) {
+  background-color: rgba(107, 158, 138, 0.15) !important;
+  color: #f5f3ee !important;
+  border-color: rgba(58, 63, 71, 0.8) !important;
+  font-weight: 600;
+}
+
+.eye-care-theme .article-content :deep(td) {
+  color: #f5f3ee !important;
+  border-color: rgba(58, 63, 71, 0.8) !important;
+}
+
+/* 护眼模式下分割线优化 */
+.eye-care-theme .article-divider {
+  background-color: rgba(58, 63, 71, 0.6) !important;
+  height: 2px;
+}
+
+/* 护眼模式下点赞按钮优化 */
+.eye-care-theme .like-btn {
+  color: #f5f3ee !important;
+  border-color: rgba(58, 63, 71, 0.8) !important;
+  background-color: rgba(34, 38, 46, 0.8) !important;
+  font-weight: 500;
+}
+
+.eye-care-theme .like-btn:hover {
+  background-color: #c46b6b !important;
+  color: #f5f3ee !important;
+  border-color: #c46b6b !important;
+}
+
+/* 护眼模式下分享区域优化 */
+.eye-care-theme .article-share {
+  background-color: rgba(34, 38, 46, 0.6) !important;
+  border: 1px solid rgba(58, 63, 71, 0.6);
+}
+
+.eye-care-theme .share-label {
+  color: #d4d1ca !important;
+  font-weight: 600;
+}
+
+.eye-care-theme .share-btn {
+  color: #f5f3ee !important;
+  border-color: rgba(58, 63, 71, 0.8) !important;
+  background-color: rgba(34, 38, 46, 0.8) !important;
+  font-weight: 500;
+}
+
+.eye-care-theme .share-btn:hover {
+  background-color: #6b9e8a !important;
+  color: #1a1d23 !important;
+  border-color: #6b9e8a !important;
+}
+
+/* 护眼模式下评论区域优化 */
+.eye-care-theme .comments-title {
+  color: #f5f3ee !important;
+  font-weight: 700;
+}
+
+/* 护眼模式下加载状态优化 */
+.eye-care-theme .loading-text {
+  color: #d4d1ca !important;
+  font-weight: 500;
+}
+
+/* 护眼模式下未找到状态优化 */
+.eye-care-theme .not-found-title {
+  color: #f5f3ee !important;
+  font-weight: 700;
+}
+
+.eye-care-theme .not-found-desc {
+  color: #d4d1ca !important;
+}
+
+.eye-care-theme .back-link {
+  color: #f5f3ee !important;
+  border-color: rgba(58, 63, 71, 0.8) !important;
+  background-color: rgba(34, 38, 46, 0.8) !important;
+  font-weight: 500;
+}
+
+.eye-care-theme .back-link:hover {
+  background-color: #6b9e8a !important;
+  color: #1a1d23 !important;
+  border-color: #6b9e8a !important;
+}
 </style>
