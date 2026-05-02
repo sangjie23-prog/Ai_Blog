@@ -16,10 +16,26 @@ import java.util.UUID;
 public class ImageUploadController {
 
     @Value("${upload.path:uploads/images}")
+    private String uploadPathConfig;
+
     private String uploadPath;
 
     @Value("${upload.max-size:10485760}")
     private long maxFileSize;
+
+    @jakarta.annotation.PostConstruct
+    public void init() {
+        File basePath = new File(uploadPathConfig);
+        if (basePath.isAbsolute()) {
+            uploadPath = uploadPathConfig;
+        } else {
+            uploadPath = System.getProperty("user.dir") + File.separator + uploadPathConfig;
+        }
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+    }
 
     private static final String[] ALLOWED_TYPES = {
         "image/jpeg", "image/png", "image/gif", "image/webp", "image/bmp"

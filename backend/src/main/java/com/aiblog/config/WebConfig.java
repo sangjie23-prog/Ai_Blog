@@ -36,7 +36,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String absolutePath = new java.io.File(uploadPath).getAbsolutePath();
+        File basePath = new File(uploadPath);
+        String absolutePath = basePath.isAbsolute() ? uploadPath : System.getProperty("user.dir") + File.separator + uploadPath;
         registry.addResourceHandler("/api/uploads/**")
                 .addResourceLocations("file:" + absolutePath + "/")
                 .setCachePeriod(86400);
