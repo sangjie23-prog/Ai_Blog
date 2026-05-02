@@ -104,7 +104,10 @@ const md = new MarkdownIt({
 
 const renderedContent = computed(() => {
   if (!article.value || !article.value.content) return ''
-  return md.render(article.value.content)
+  let content = article.value.content
+  // 兼容旧图片URL格式：将 /api/uploads/images/ 转换为 /api/uploads/
+  content = content.replace(/\/api\/uploads\/images\//g, '/api/uploads/')
+  return md.render(content)
 })
 
 async function loadArticle() {
