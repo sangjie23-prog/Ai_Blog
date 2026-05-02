@@ -89,11 +89,12 @@ const md = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
+  breaks: true,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return '<pre class="hljs"><code>' +
-               hljs.highlight(str, { language: lang }).value +
+               hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
                '</code></pre>'
       } catch (__) {}
     }
@@ -311,6 +312,17 @@ onMounted(() => {
 
 .article-content :deep(li) {
   margin-bottom: var(--space-sm);
+}
+
+.article-content :deep(li input[type="checkbox"]) {
+  margin-right: 8px;
+}
+
+.article-content :deep(hr) {
+  border: none;
+  height: 1px;
+  background-color: var(--border-color);
+  margin: var(--space-xl) 0;
 }
 
 .article-content :deep(table) {
