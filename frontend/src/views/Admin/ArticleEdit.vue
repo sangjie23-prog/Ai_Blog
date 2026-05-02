@@ -44,6 +44,7 @@
       <div class="form-group">
         <label>内容</label>
         <MarkdownEditor
+          ref="editorRef"
           v-model="form.content"
           :auto-save-key="autoSaveKey"
         />
@@ -74,7 +75,13 @@ const router = useRouter()
 
 const isEdit = computed(() => !!route.params.id)
 const articleId = computed(() => route.params.id)
-const autoSaveKey = computed(() => `article-editor-${articleId.value || 'new'}`)
+const newArticleSession = ref(Date.now().toString())
+const autoSaveKey = computed(() => {
+  if (articleId.value) {
+    return `article-editor-${articleId.value}`
+  }
+  return `article-editor-new-${newArticleSession.value}`
+})
 
 const form = reactive({
   title: '',
@@ -85,6 +92,7 @@ const form = reactive({
   status: 0
 })
 
+const editorRef = ref(null)
 const loading = ref(false)
 const aiLoading = ref(false)
 
@@ -124,6 +132,7 @@ async function handleSubmit() {
       await createAdminArticle(data)
     }
 
+    editorRef.value?.clearAutoSave()
     alert('保存成功')
     router.push('/admin/articles')
   } catch (error) {
@@ -160,6 +169,7 @@ async function handlePublish() {
     }
 
     alert('发布成功')
+    editorRef.value?.clearAutoSave()
     router.push('/admin/articles')
   } catch (error) {
     alert('发布失败')

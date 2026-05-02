@@ -149,7 +149,7 @@ const props = defineProps({
   },
   autoSaveKey: {
     type: String,
-    default: 'markdown-editor-autosave'
+    default: null
   }
 })
 
@@ -356,7 +356,11 @@ function insertTodo() {
 // 自动保存到 localStorage
 function saveToLocalStorage() {
   if (props.autoSaveKey) {
-    localStorage.setItem(props.autoSaveKey, localContent.value)
+    const data = {
+      content: localContent.value,
+      timestamp: Date.now()
+    }
+    localStorage.setItem(props.autoSaveKey, JSON.stringify(data))
     const now = new Date()
     lastSaved.value = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
   }
@@ -366,10 +370,30 @@ function saveToLocalStorage() {
 function loadFromLocalStorage() {
   if (props.autoSaveKey) {
     const saved = localStorage.getItem(props.autoSaveKey)
-    if (saved && !localContent.value) {
-      localContent.value = saved
-      emit('update:modelValue', saved)
+    if (saved) {
+      try {
+        const data = JSON.parse(saved)
+        // 只恢复 24 小时内的草稿
+        const hoursDiff = (Date.now() - data.timestamp) / (1000 * 60 * 60)
+        if (hoursDiff < 24 && data.content && !localContent.value) {
+          localContent.value = data.content
+          emit('update:modelValue', data.content)
+        }
+      } catch (e) {
+        // 旧格式兼容
+        if (saved && !localContent.value) {
+          localContent.value = saved
+          emit('update:modelValue', saved)
+        }
+      }
     }
+  }
+}
+
+// 清除自动保存的草稿
+function clearAutoSave() {
+  if (props.autoSaveKey) {
+    localStorage.removeItem(props.autoSaveKey)
   }
 }
 
@@ -380,6 +404,9 @@ function toggleAutoSave() {
     saveToLocalStorage()
   }
 }
+
+// 暴露清除方法给父组件
+defineExpose({ clearAutoSave })
 
 onMounted(() => {
   loadFromLocalStorage()
