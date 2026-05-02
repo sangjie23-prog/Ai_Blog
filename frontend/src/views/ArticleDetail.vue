@@ -31,7 +31,18 @@
 
     <div class="article-divider"></div>
 
-    <article class="article-content animate-slide-up" v-html="renderedContent"></article>
+    <article 
+      class="article-content animate-slide-up" 
+      v-html="renderedContent"
+      @click="handleImageClick"
+    ></article>
+
+    <ImageViewer 
+      v-model="viewerVisible" 
+      :image-url="currentImageUrl" 
+      :image-alt="currentImageAlt"
+      @close="viewerVisible = false"
+    />
 
     <div class="article-footer animate-fade-in">
       <div class="article-actions">
@@ -80,10 +91,15 @@ import { getArticleDetail, likeArticle } from '../api/article'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import CommentForm from '../components/CommentForm.vue'
+import ImageViewer from '../components/ImageViewer.vue'
 
 const route = useRoute()
 const article = ref(null)
 const loading = ref(false)
+
+const viewerVisible = ref(false)
+const currentImageUrl = ref('')
+const currentImageAlt = ref('')
 
 const md = new MarkdownIt({
   html: true,
@@ -145,6 +161,17 @@ function formatDate(dateStr) {
     month: 'long', 
     day: 'numeric'
   })
+}
+
+function handleImageClick(event) {
+  const target = event.target
+  if (target.tagName === 'IMG') {
+    event.preventDefault()
+    event.stopPropagation()
+    currentImageUrl.value = target.src
+    currentImageAlt.value = target.alt || '图片查看'
+    viewerVisible.value = true
+  }
 }
 
 onMounted(() => {
@@ -306,6 +333,12 @@ onMounted(() => {
   border-radius: var(--radius-md);
   margin: var(--space-md) 0;
   box-shadow: var(--card-shadow);
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.article-content :deep(img:hover) {
+  transform: scale(1.02);
 }
 
 .article-content :deep(ul), .article-content :deep(ol) {
