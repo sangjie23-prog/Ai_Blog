@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getArticleDetail, likeArticle } from '../api/article'
 import MarkdownIt from 'markdown-it'
@@ -108,14 +108,16 @@ const md = new MarkdownIt({
   typographer: true,
   breaks: true,
   highlight: function (str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
+    const escapedCode = md.utils.escapeHtml(str)
+    const language = lang && hljs.getLanguage(lang) ? lang : ''
+    
+    if (language) {
       try {
-        return '<pre class="hljs"><code>' +
-               hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
-               '</code></pre>'
+        const highlighted = hljs.highlight(str, { language, ignoreIllegals: true }).value
+        return `<pre class="hljs" data-lang="${language}"><code>${highlighted}</code></pre>`
       } catch (__) {}
     }
-    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    return `<pre class="hljs" data-lang="${language}"><code>${escapedCode}</code></pre>`
   }
 })
 
@@ -125,6 +127,207 @@ const renderedContent = computed(() => {
   // 兼容旧图片URL格式：将 /api/uploads/images/ 转换为 /api/uploads/
   content = content.replace(/\/api\/uploads\/images\//g, '/api/uploads/')
   return md.render(content)
+})
+
+const languageNames = {
+  javascript: 'JavaScript',
+  typescript: 'TypeScript',
+  python: 'Python',
+  java: 'Java',
+  cpp: 'C++',
+  c: 'C',
+  csharp: 'C#',
+  go: 'Go',
+  rust: 'Rust',
+  php: 'PHP',
+  ruby: 'Ruby',
+  swift: 'Swift',
+  kotlin: 'Kotlin',
+  sql: 'SQL',
+  html: 'HTML',
+  css: 'CSS',
+  scss: 'SCSS',
+  less: 'Less',
+  json: 'JSON',
+  xml: 'XML',
+  yaml: 'YAML',
+  markdown: 'Markdown',
+  bash: 'Bash',
+  shell: 'Shell',
+  powershell: 'PowerShell',
+  dockerfile: 'Dockerfile',
+  nginx: 'Nginx',
+  vue: 'Vue',
+  react: 'React',
+  tsx: 'TSX',
+  jsx: 'JSX'
+}
+
+function enhanceCodeBlocks() {
+  const codeBlocks = document.querySelectorAll('.article-content pre.hljs')
+  
+  codeBlocks.forEach((pre, index) => {
+    if (pre.dataset.enhanced) return
+    
+    const lang = pre.dataset.lang || ''
+    const code = pre.querySelector('code')
+    const rawCode = code.textContent
+    const lineCount = rawCode.split('\n').length
+    const languageName = languageNames[lang.toLowerCase()] || lang || 'Text'
+    
+    // 创建代码块包装器
+    const wrapper = document.createElement('div')
+    wrapper.className = 'professional-code-block'
+    wrapper.dataset.lang = lang
+    
+    // 创建头部
+    const header = document.createElement('div')
+    header.className = 'code-header'
+    header.innerHTML = `
+      <div class="code-header-left">
+        <span class="code-language">${languageName}</span>
+        <span class="code-lines-count">${lineCount} 行</span>
+      </div>
+      <div class="code-header-actions">
+        <button class="code-action-btn code-wrap-btn" title="自动换行" aria-label="切换自动换行">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h1c1.1 0 2-.9 2-2s-.9-2-2-2zM4 11h12v-2H4v2z"/>
+          </svg>
+        </button>
+        <button class="code-action-btn code-collapse-btn" title="折叠代码" aria-label="切换折叠状态">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+          </svg>
+        </button>
+        <button class="code-action-btn code-copy-btn" title="复制代码" aria-label="复制代码">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+          </svg>
+        </button>
+      </div>
+    `
+    
+    // 创建代码内容区域
+    const content = document.createElement('div')
+    content.className = 'code-content'
+    
+    const scrollWrapper = document.createElement('div')
+    scrollWrapper.className = 'code-scroll-wrapper'
+    
+    // 创建带行号的表格
+    const table = document.createElement('table')
+    table.className = 'code-table'
+    const tbody = document.createElement('tbody')
+    
+    const lines = rawCode.split('\n')
+    lines.forEach((line, lineIndex) => {
+      const tr = document.createElement('tr')
+      
+      const lineNumberTd = document.createElement('td')
+      lineNumberTd.className = 'line-number'
+      lineNumberTd.textContent = lineIndex + 1
+      
+      const lineContentTd = document.createElement('td')
+      lineContentTd.className = 'line-content'
+      
+      // 如果有高亮，提取对应行的高亮HTML
+      if (code.innerHTML !== rawCode) {
+        // 从原始高亮HTML中提取该行
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = code.innerHTML
+        const allText = tempDiv.innerHTML
+        const allLines = allText.split('\n')
+        if (allLines[lineIndex]) {
+          lineContentTd.innerHTML = allLines[lineIndex]
+        } else {
+          lineContentTd.textContent = line
+        }
+      } else {
+        lineContentTd.textContent = line
+      }
+      
+      tr.appendChild(lineNumberTd)
+      tr.appendChild(lineContentTd)
+      tbody.appendChild(tr)
+    })
+    
+    table.appendChild(tbody)
+    scrollWrapper.appendChild(table)
+    content.appendChild(scrollWrapper)
+    
+    // 组装
+    wrapper.appendChild(header)
+    wrapper.appendChild(content)
+    
+    // 替换原始pre元素
+    pre.parentNode.replaceChild(wrapper, pre)
+    pre.dataset.enhanced = 'true'
+    
+    // 绑定事件
+    const copyBtn = wrapper.querySelector('.code-copy-btn')
+    const collapseBtn = wrapper.querySelector('.code-collapse-btn')
+    const wrapBtn = wrapper.querySelector('.codewrap-btn, .code-wrap-btn')
+    
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(rawCode)
+        copyBtn.classList.add('copied')
+        copyBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+        `
+        copyBtn.title = '已复制'
+        toast.value?.success('代码已复制到剪贴板')
+        setTimeout(() => {
+          copyBtn.classList.remove('copied')
+          copyBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          `
+          copyBtn.title = '复制代码'
+        }, 2000)
+      } catch (err) {
+        toast.value?.error('复制失败，请手动复制')
+      }
+    })
+    
+    collapseBtn.addEventListener('click', () => {
+      wrapper.classList.toggle('is-collapsed')
+      const isCollapsed = wrapper.classList.contains('is-collapsed')
+      collapseBtn.title = isCollapsed ? '展开代码' : '折叠代码'
+      collapseBtn.innerHTML = isCollapsed ? `
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M7 14l5-5 5 5z"/>
+        </svg>
+      ` : `
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+        </svg>
+      `
+    })
+    
+    wrapBtn.addEventListener('click', () => {
+      content.classList.toggle('wrap-lines')
+      const isWrapped = content.classList.contains('wrap-lines')
+      wrapBtn.title = isWrapped ? '取消自动换行' : '自动换行'
+      wrapBtn.innerHTML = isWrapped ? `
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M4 5h16v2H4V5zm0 4h16v2H4V9zm0 4h16v2H4v-2zm0 4h16v2H4v-2z"/>
+        </svg>
+      ` : `
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h1c1.1 0 2-.9 2-2s-.9-2-2-2zM4 11h12v-2H4v2z"/>
+        </svg>
+      `
+    })
+  })
+}
+
+watch(renderedContent, async () => {
+  await nextTick()
+  enhanceCodeBlocks()
 })
 
 async function loadArticle() {
@@ -175,8 +378,10 @@ function handleImageClick(event) {
   }
 }
 
-onMounted(() => {
-  loadArticle()
+onMounted(async () => {
+  await loadArticle()
+  await nextTick()
+  enhanceCodeBlocks()
 })
 </script>
 
@@ -305,18 +510,221 @@ onMounted(() => {
 }
 
 .article-content :deep(pre) {
-  background-color: var(--code-bg);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  overflow-x: auto;
-  margin-bottom: var(--space-md);
-  border: 1px solid var(--border-color);
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  overflow: visible;
 }
 
 .article-content :deep(pre code) {
   background: none;
   padding: 0;
   color: inherit;
+}
+
+/* 专业代码块样式 */
+.article-content :deep(.professional-code-block) {
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1e1e1e;
+  border: 1px solid #2d2d2d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.article-content :deep(.professional-code-block:hover) {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.article-content :deep(.professional-code-block.is-collapsed) {
+  max-height: 48px;
+}
+
+/* 代码块头部 */
+.article-content :deep(.code-header) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #252526;
+  border-bottom: 1px solid #2d2d2d;
+  user-select: none;
+}
+
+.article-content :deep(.code-header-left) {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.article-content :deep(.code-language) {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #569cd6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.article-content :deep(.code-lines-count) {
+  font-size: 0.75rem;
+  color: #858585;
+}
+
+.article-content :deep(.code-header-actions) {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.article-content :deep(.code-action-btn) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #858585;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.article-content :deep(.code-action-btn:hover) {
+  background: #3c3c3c;
+  color: #cccccc;
+}
+
+.article-content :deep(.code-copy-btn.copied) {
+  color: #4ec9b0;
+}
+
+.article-content :deep(.code-copy-btn.copied:hover) {
+  background: rgba(78, 201, 176, 0.1);
+}
+
+/* 代码内容区域 */
+.article-content :deep(.code-content) {
+  overflow: auto;
+  max-height: 600px;
+  transition: max-height 0.3s ease;
+}
+
+.article-content :deep(.professional-code-block.is-collapsed .code-content) {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.article-content :deep(.code-scroll-wrapper) {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.article-content :deep(.code-content.wrap-lines .code-scroll-wrapper) {
+  overflow-x: hidden;
+}
+
+.article-content :deep(.code-content.wrap-lines .line-content) {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 代码表格布局 */
+.article-content :deep(.code-table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
+.article-content :deep(.code-table tbody) {
+  counter-reset: line;
+}
+
+.article-content :deep(.line-number) {
+  width: 3.5rem;
+  min-width: 3.5rem;
+  padding: 0 1rem 0 1.5rem;
+  text-align: right;
+  color: #858585;
+  background: #1e1e1e;
+  border-right: 1px solid #2d2d2d;
+  user-select: none;
+  font-size: 0.8125rem;
+  vertical-align: top;
+}
+
+.article-content :deep(.line-content) {
+  padding: 0 1.5rem 0 1rem;
+  color: #d4d4d4;
+  vertical-align: top;
+  white-space: pre;
+}
+
+/* 代码行悬停效果 */
+.article-content :deep(.code-table tr:hover .line-number) {
+  color: #cccccc;
+  background: #2a2d2e;
+}
+
+.article-content :deep(.code-table tr:hover .line-content) {
+  background: #2a2d2e;
+}
+
+/* 语法高亮样式 - VS Code Dark+ 主题 */
+.article-content :deep(.code-table .hljs-keyword) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-built_in) { color: #4ec9b0; }
+.article-content :deep(.code-table .hljs-type) { color: #4ec9b0; }
+.article-content :deep(.code-table .hljs-literal) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-number) { color: #b5cea8; }
+.article-content :deep(.code-table .hljs-regexp) { color: #d16969; }
+.article-content :deep(.code-table .hljs-string) { color: #ce9178; }
+.article-content :deep(.code-table .hljs-title) { color: #dcdcaa; }
+.article-content :deep(.code-table .hljs-function) { color: #dcdcaa; }
+.article-content :deep(.code-table .hljs-params) { color: #9cdcfe; }
+.article-content :deep(.code-table .hljs-comment) { color: #6a9955; font-style: italic; }
+.article-content :deep(.code-table .hljs-meta) { color: #9b9b9b; }
+.article-content :deep(.code-table .hljs-tag) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-attribute) { color: #92c5f7; }
+.article-content :deep(.code-table .hljs-variable) { color: #9cdcfe; }
+.article-content :deep(.code-table .hljs-selector-tag) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-selector-class) { color: #d7ba7d; }
+.article-content :deep(.code-table .hljs-selector-id) { color: #d7ba7d; }
+.article-content :deep(.code-table .hljs-selector-pseudo) { color: #d7ba7d; }
+.article-content :deep(.code-table .hljs-section) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-name) { color: #569cd6; }
+.article-content :deep(.code-table .hljs-attr) { color: #92c5f7; }
+.article-content :deep(.code-table .hljs-symbol) { color: #4ec9b0; }
+.article-content :deep(.code-table .hljs-bullet) { color: #4ec9b0; }
+.article-content :deep(.code-table .hljs-link) { color: #569cd6; text-decoration: underline; }
+.article-content :deep(.code-table .hljs-emphasis) { font-style: italic; }
+.article-content :deep(.code-table .hljs-strong) { font-weight: bold; }
+.article-content :deep(.code-table .hljs-formula) { color: #d4d4d4; }
+.article-content :deep(.code-table .hljs-quote) { color: #6a9955; font-style: italic; }
+
+/* 滚动条样式 */
+.article-content :deep(.code-scroll-wrapper::-webkit-scrollbar) {
+  width: 8px;
+  height: 8px;
+}
+
+.article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-track) {
+  background: #1e1e1e;
+}
+
+.article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-thumb) {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-thumb:hover) {
+  background: #4f4f4f;
 }
 
 .article-content :deep(blockquote) {
@@ -571,6 +979,54 @@ onMounted(() => {
     font-size: 1.25rem;
   }
   
+  /* 移动端代码块优化 */
+  .article-content :deep(.professional-code-block) {
+    margin: 1rem 0;
+    border-radius: 8px;
+  }
+  
+  .article-content :deep(.code-header) {
+    padding: 0.625rem 0.75rem;
+  }
+  
+  .article-content :deep(.code-language) {
+    font-size: 0.75rem;
+  }
+  
+  .article-content :deep(.code-lines-count) {
+    font-size: 0.6875rem;
+  }
+  
+  .article-content :deep(.code-action-btn) {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .article-content :deep(.code-action-btn svg) {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .article-content :deep(.code-table) {
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  
+  .article-content :deep(.line-number) {
+    width: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0 0.5rem 0 0.75rem;
+    font-size: 0.6875rem;
+  }
+  
+  .article-content :deep(.line-content) {
+    padding: 0 0.75rem 0 0.5rem;
+  }
+  
+  .article-content :deep(.code-content) {
+    max-height: 400px;
+  }
+  
   .article-share {
     flex-direction: row;
     justify-content: center;
@@ -586,6 +1042,44 @@ onMounted(() => {
   
   .article-content {
     font-size: 0.9375rem;
+  }
+  
+  /* 小屏移动端代码块优化 */
+  .article-content :deep(.professional-code-block) {
+    margin: 0.75rem 0;
+    border-radius: 6px;
+  }
+  
+  .article-content :deep(.code-header) {
+    padding: 0.5rem 0.625rem;
+  }
+  
+  .article-content :deep(.code-header-left) {
+    gap: 0.5rem;
+  }
+  
+  .article-content :deep(.code-language) {
+    font-size: 0.6875rem;
+  }
+  
+  .article-content :deep(.code-lines-count) {
+    display: none;
+  }
+  
+  .article-content :deep(.code-table) {
+    font-size: 0.6875rem;
+    line-height: 1.5;
+  }
+  
+  .article-content :deep(.line-number) {
+    width: 2rem;
+    min-width: 2rem;
+    padding: 0 0.375rem 0 0.5rem;
+    font-size: 0.625rem;
+  }
+  
+  .article-content :deep(.line-content) {
+    padding: 0 0.5rem 0 0.375rem;
   }
   
   .like-btn {
@@ -614,242 +1108,5 @@ onMounted(() => {
   .article-divider {
     display: none;
   }
-}
-
-/* 护眼模式优化 - 提高文字清晰度和可读性 */
-.eye-care-theme .article-detail {
-  /* 优化文字渲染 */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-/* 护眼模式下标题优化 */
-.eye-care-theme .article-title {
-  color: #f5f3ee !important;
-  font-weight: 700 !important;
-  text-shadow: 0 0 1px rgba(245, 243, 238, 0.15);
-  letter-spacing: -0.3px;
-}
-
-/* 护眼模式下元信息优化 */
-.eye-care-theme .meta-item {
-  color: #d4d1ca !important;
-  font-weight: 500;
-}
-
-.eye-care-theme .meta-icon {
-  opacity: 0.85;
-}
-
-/* 护眼模式下标签优化 */
-.eye-care-theme .article-tag {
-  color: #d4d1ca !important;
-  background-color: rgba(107, 158, 138, 0.2) !important;
-  border: 1px solid rgba(107, 158, 138, 0.3);
-  font-weight: 500;
-}
-
-/* 护眼模式下正文内容优化 */
-.eye-care-theme .article-content {
-  color: #f5f3ee !important;
-  font-size: 1.125rem;
-  line-height: 1.9;
-  letter-spacing: 0.2px;
-}
-
-.eye-care-theme .article-content :deep(p) {
-  color: #f5f3ee !important;
-  margin-bottom: 1.5rem;
-  line-height: 1.9;
-}
-
-/* 护眼模式下标题层级优化 */
-.eye-care-theme .article-content :deep(h1) {
-  color: #f5f3ee !important;
-  font-size: 1.875rem;
-  font-weight: 700 !important;
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom-color: rgba(107, 158, 138, 0.4) !important;
-  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
-}
-
-.eye-care-theme .article-content :deep(h2) {
-  color: #f5f3ee !important;
-  font-size: 1.625rem;
-  font-weight: 700 !important;
-  margin-top: 2.5rem;
-  margin-bottom: 1.25rem;
-  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
-}
-
-.eye-care-theme .article-content :deep(h3) {
-  color: #f5f3ee !important;
-  font-size: 1.375rem;
-  font-weight: 600 !important;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
-}
-
-.eye-care-theme .article-content :deep(h4) {
-  color: #f5f3ee !important;
-  font-size: 1.25rem;
-  font-weight: 600 !important;
-  margin-top: 1.75rem;
-  margin-bottom: 0.875rem;
-}
-
-.eye-care-theme .article-content :deep(h5),
-.eye-care-theme .article-content :deep(h6) {
-  color: #f5f3ee !important;
-  font-weight: 600 !important;
-}
-
-/* 护眼模式下链接优化 */
-.eye-care-theme .article-content :deep(a) {
-  color: #7db89e !important;
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: rgba(125, 184, 158, 0.4);
-  text-underline-offset: 3px;
-  transition: all 0.2s ease;
-}
-
-.eye-care-theme .article-content :deep(a:hover) {
-  color: #8ac8b0 !important;
-  text-decoration-color: rgba(125, 184, 158, 0.7);
-}
-
-/* 护眼模式下引用块优化 */
-.eye-care-theme .article-content :deep(blockquote) {
-  background-color: rgba(107, 158, 138, 0.08) !important;
-  border-left-color: #6b9e8a !important;
-  color: #e8e6e1 !important;
-  font-style: italic;
-  padding: 1.25rem 1.5rem;
-  margin: 1.5rem 0;
-  line-height: 1.8;
-}
-
-.eye-care-theme .article-content :deep(blockquote p) {
-  color: #e8e6e1 !important;
-}
-
-/* 护眼模式下列表优化 */
-.eye-care-theme .article-content :deep(ul),
-.eye-care-theme .article-content :deep(ol) {
-  color: #f5f3ee !important;
-  padding-left: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.eye-care-theme .article-content :deep(li) {
-  color: #f5f3ee !important;
-  margin-bottom: 0.75rem;
-  line-height: 1.8;
-}
-
-.eye-care-theme .article-content :deep(li::marker) {
-  color: #6b9e8a;
-}
-
-/* 护眼模式下表格优化 */
-.eye-care-theme .article-content :deep(table) {
-  border-color: rgba(58, 63, 71, 0.8) !important;
-  margin-bottom: 1.5rem;
-}
-
-.eye-care-theme .article-content :deep(th) {
-  background-color: rgba(107, 158, 138, 0.15) !important;
-  color: #f5f3ee !important;
-  border-color: rgba(58, 63, 71, 0.8) !important;
-  font-weight: 600;
-}
-
-.eye-care-theme .article-content :deep(td) {
-  color: #f5f3ee !important;
-  border-color: rgba(58, 63, 71, 0.8) !important;
-}
-
-/* 护眼模式下分割线优化 */
-.eye-care-theme .article-divider {
-  background-color: rgba(58, 63, 71, 0.6) !important;
-  height: 2px;
-}
-
-/* 护眼模式下点赞按钮优化 */
-.eye-care-theme .like-btn {
-  color: #f5f3ee !important;
-  border-color: rgba(58, 63, 71, 0.8) !important;
-  background-color: rgba(34, 38, 46, 0.8) !important;
-  font-weight: 500;
-}
-
-.eye-care-theme .like-btn:hover {
-  background-color: #c46b6b !important;
-  color: #f5f3ee !important;
-  border-color: #c46b6b !important;
-}
-
-/* 护眼模式下分享区域优化 */
-.eye-care-theme .article-share {
-  background-color: rgba(34, 38, 46, 0.6) !important;
-  border: 1px solid rgba(58, 63, 71, 0.6);
-}
-
-.eye-care-theme .share-label {
-  color: #d4d1ca !important;
-  font-weight: 600;
-}
-
-.eye-care-theme .share-btn {
-  color: #f5f3ee !important;
-  border-color: rgba(58, 63, 71, 0.8) !important;
-  background-color: rgba(34, 38, 46, 0.8) !important;
-  font-weight: 500;
-}
-
-.eye-care-theme .share-btn:hover {
-  background-color: #6b9e8a !important;
-  color: #1a1d23 !important;
-  border-color: #6b9e8a !important;
-}
-
-/* 护眼模式下评论区域优化 */
-.eye-care-theme .comments-title {
-  color: #f5f3ee !important;
-  font-weight: 700;
-}
-
-/* 护眼模式下加载状态优化 */
-.eye-care-theme .loading-text {
-  color: #d4d1ca !important;
-  font-weight: 500;
-}
-
-/* 护眼模式下未找到状态优化 */
-.eye-care-theme .not-found-title {
-  color: #f5f3ee !important;
-  font-weight: 700;
-}
-
-.eye-care-theme .not-found-desc {
-  color: #d4d1ca !important;
-}
-
-.eye-care-theme .back-link {
-  color: #f5f3ee !important;
-  border-color: rgba(58, 63, 71, 0.8) !important;
-  background-color: rgba(34, 38, 46, 0.8) !important;
-  font-weight: 500;
-}
-
-.eye-care-theme .back-link:hover {
-  background-color: #6b9e8a !important;
-  color: #1a1d23 !important;
-  border-color: #6b9e8a !important;
 }
 </style>

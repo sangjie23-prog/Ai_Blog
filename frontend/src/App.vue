@@ -825,6 +825,103 @@ a:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* 护眼模式下专业代码块优化 */
+.eye-care-theme .professional-code-block {
+  background: #1a1d23;
+  border-color: #3a3f47;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.eye-care-theme .professional-code-block:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.eye-care-theme .code-header {
+  background: #22262e;
+  border-color: #3a3f47;
+}
+
+.eye-care-theme .code-language {
+  color: #6b9e8a;
+}
+
+.eye-care-theme .code-lines-count {
+  color: #a8a59e;
+}
+
+.eye-care-theme .code-action-btn {
+  color: #a8a59e;
+}
+
+.eye-care-theme .code-action-btn:hover {
+  background: #2a2f38;
+  color: #f5f3ee;
+}
+
+.eye-care-theme .code-copy-btn.copied {
+  color: #6b9e6b;
+}
+
+.eye-care-theme .line-number {
+  background: #1a1d23;
+  border-color: #3a3f47;
+  color: #a8a59e;
+}
+
+.eye-care-theme .line-content {
+  color: #f5f3ee;
+}
+
+.eye-care-theme .code-table tr:hover .line-number {
+  background: #22262e;
+  color: #f5f3ee;
+}
+
+.eye-care-theme .code-table tr:hover .line-content {
+  background: #22262e;
+}
+
+.eye-care-theme .code-scroll-wrapper::-webkit-scrollbar-track {
+  background: #1a1d23;
+}
+
+.eye-care-theme .code-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #4a4f57;
+}
+
+.eye-care-theme .code-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #5a5f67;
+}
+
+/* 护眼模式下语法高亮颜色调整 */
+.eye-care-theme .code-table .hljs-keyword { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-built_in { color: #6b9e6b; }
+.eye-care-theme .code-table .hljs-type { color: #6b9e6b; }
+.eye-care-theme .code-table .hljs-literal { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-number { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-regexp { color: #c46b6b; }
+.eye-care-theme .code-table .hljs-string { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-title { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-function { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-params { color: #8ac8e8; }
+.eye-care-theme .code-table .hljs-comment { color: #6b9e6b; font-style: italic; }
+.eye-care-theme .code-table .hljs-meta { color: #a8a59e; }
+.eye-care-theme .code-table .hljs-tag { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-attribute { color: #8ac8e8; }
+.eye-care-theme .code-table .hljs-variable { color: #8ac8e8; }
+.eye-care-theme .code-table .hljs-selector-tag { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-selector-class { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-selector-id { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-selector-pseudo { color: #c4a35a; }
+.eye-care-theme .code-table .hljs-section { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-name { color: #6b9e8a; }
+.eye-care-theme .code-table .hljs-attr { color: #8ac8e8; }
+.eye-care-theme .code-table .hljs-symbol { color: #6b9e6b; }
+.eye-care-theme .code-table .hljs-bullet { color: #6b9e6b; }
+.eye-care-theme .code-table .hljs-link { color: #6b9e8a; text-decoration: underline; }
+.eye-care-theme .code-table .hljs-formula { color: #f5f3ee; }
+.eye-care-theme .code-table .hljs-quote { color: #6b9e6b; font-style: italic; }
+
 /* 标签样式 */
 .tag {
   display: inline-block;
