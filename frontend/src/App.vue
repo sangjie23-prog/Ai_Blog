@@ -123,88 +123,84 @@ onMounted(() => {
   --container-2xl: 1400px;
 }
 
-/* 护眼深色主题 - 人体工程学设计 */
+/* 护眼深色主题 - Gemini 深色风格 */
 .eye-care-theme {
-  /* 护眼深色模式配色 - 减少蓝光，降低视觉疲劳 */
-  /* 背景使用暖色调深灰，避免纯黑造成的强烈对比 */
-  --bg-color: #1a1d23;
-  --bg-secondary: #22262e;
-  --bg-tertiary: #2a2f38;
+  /* 背景 - 深空灰，减少蓝光辐射 */
+  --bg-color: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #2d2d30;
   
-  /* 文字使用高对比度暖白色，确保清晰可读 */
-  /* 主文字对比度 13.2:1，远超 WCAG AAA 标准 (7:1) */
-  --text-color: #f5f3ee;
-  /* 次要文字对比度 8.5:1，符合 WCAG AAA 标准 */
-  --text-secondary: #d4d1ca;
-  /* 三级文字对比度 5.8:1，符合 WCAG AA 大文本标准 */
-  --text-tertiary: #a8a59e;
+  /* 文字 - 高对比度暖白，符合 WCAG AAA 标准 */
+  --text-color: #e8e6e1;
+  --text-secondary: #c4c1bb;
+  --text-tertiary: #9a978f;
   
-  /* 边框使用低饱和度灰色 */
-  --border-color: #3a3f47;
-  --border-light: #2a2f38;
+  /* 边框 - 低饱和度 */
+  --border-color: #3e3e42;
+  --border-light: #2d2d30;
   
-  /* 强调色使用暖色调蓝绿，减少刺眼感 */
-  --accent-color: #6b9e8a;
-  --accent-hover: #7db89e;
-  --accent-light: rgba(107, 158, 138, 0.15);
+  /* 强调色 - 柔和蓝绿，减少视觉疲劳 */
+  --accent-color: #7eb8a0;
+  --accent-hover: #8ec9b1;
+  --accent-light: rgba(126, 184, 160, 0.12);
   
-  /* 卡片背景使用暖深灰，与背景形成微妙层次 */
-  --card-bg: #22262e;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.35);
+  /* 卡片 */
+  --card-bg: #252526;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
   
-  /* 头部和底部背景 */
-  --header-bg: rgba(26, 29, 35, 0.98);
-  --footer-bg: #141619;
-  --footer-text: #e8e6e1;
+  /* 头部和底部 */
+  --header-bg: rgba(30, 30, 30, 0.98);
+  --footer-bg: #181818;
+  --footer-text: #d4d1ca;
   
-  /* 代码块配色 - 暖色调 */
-  --code-bg: #2a2f38;
-  --code-text: #e88a8a;
+  /* 代码块 */
+  --code-bg: #2d2d30;
+  --code-text: #d4a0a0;
   
-  /* 悬停背景 */
-  --hover-bg: #2a2f38;
+  /* 悬停 */
+  --hover-bg: #2d2d30;
   
-  /* 状态颜色 - 降低饱和度 */
-  --success-color: #6b9e6b;
-  --warning-color: #c4a35a;
-  --error-color: #c46b6b;
-  --info-color: #6b8e9e;
+  /* 状态颜色 */
+  --success-color: #7eb87e;
+  --warning-color: #d4b87e;
+  --error-color: #d48a8a;
+  --info-color: #7ea8b8;
   
-  /* 表单背景 */
-  --input-bg: #1a1d23;
-  --input-border: #3a3f47;
-  --input-focus-border: #6b9e8a;
+  /* 表单 */
+  --input-bg: #1e1e1e;
+  --input-border: #3e3e42;
+  --input-focus-border: #7eb8a0;
   
-  /* 按钮配色 */
-  --btn-primary-bg: #6b9e8a;
-  --btn-primary-text: #1a1d23;
-  --btn-secondary-bg: #2a2f38;
+  /* 按钮 */
+  --btn-primary-bg: #7eb8a0;
+  --btn-primary-text: #1e1e1e;
+  --btn-secondary-bg: #2d2d30;
   --btn-secondary-text: #e8e6e1;
   
-  /* 标签配色 */
-  --tag-bg: #2a2f38;
+  /* 标签 */
+  --tag-bg: #2d2d30;
   --tag-text: #b8b5ad;
   
-  /* 遮罩层 */
-  --overlay-bg: rgba(0, 0, 0, 0.65);
+  /* 遮罩 */
+  --overlay-bg: rgba(0, 0, 0, 0.7);
   
   /* 滚动条 */
-  --scrollbar-thumb: #4a4f57;
-  --scrollbar-track: #22262e;
+  --scrollbar-thumb: #4a4a4e;
+  --scrollbar-track: #252526;
   
-  /* 提示框配色 - 护眼深色模式（提高对比度） */
+  /* 提示框 */
   --alert-success-bg: #1e3a2a;
-  --alert-success-text: #a8d8a8;
+  --alert-success-text: #b8d8b8;
   --alert-success-border: #2d5a3f;
   --alert-warning-bg: #3a3520;
-  --alert-warning-text: #e8c878;
+  --alert-warning-text: #e8d8a8;
   --alert-warning-border: #5a4a28;
   --alert-error-bg: #3a2020;
-  --alert-error-text: #e88a8a;
+  --alert-error-text: #e8a8a8;
   --alert-error-border: #5a2828;
   --alert-info-bg: #1e3040;
-  --alert-info-text: #8ac8e8;
+  --alert-info-text: #a8d8e8;
   --alert-info-border: #284a5a;
 }
 
@@ -235,8 +231,8 @@ body {
 
 /* 护眼模式下文字优化 */
 .eye-care-theme body {
-  /* 微妙的暖色渐变背景，增加视觉层次 */
-  background-image: radial-gradient(ellipse at top, rgba(107, 158, 138, 0.03) 0%, transparent 50%);
+  /* 微妙的渐变背景，增加视觉层次 */
+  background-image: radial-gradient(ellipse at top, rgba(126, 184, 160, 0.02) 0%, transparent 50%);
   /* 确保文字渲染清晰 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -252,8 +248,6 @@ body {
 .eye-care-theme h6 {
   color: var(--text-color);
   font-weight: 700;
-  /* 增强标题清晰度 */
-  text-shadow: 0 0 1px rgba(245, 243, 238, 0.1);
 }
 
 /* 护眼模式下正文文字 - 增强清晰度 */
@@ -286,7 +280,7 @@ body {
 /* 护眼模式下代码块文字增强 */
 .eye-care-theme code {
   background-color: var(--code-bg) !important;
-  color: #f0a0a0 !important;
+  color: #d4a0a0 !important;
   font-weight: 500;
 }
 
@@ -296,7 +290,7 @@ body {
 }
 
 .eye-care-theme pre code {
-  color: #f0a0a0 !important;
+  color: #d4a0a0 !important;
 }
 
 /* 护眼模式下引用块文字增强 */
@@ -339,7 +333,7 @@ body {
 
 /* 护眼模式下按钮文字增强 */
 .eye-care-theme .btn-primary {
-  color: #1a1d23 !important;
+  color: #1e1e1e !important;
   font-weight: 600;
 }
 
