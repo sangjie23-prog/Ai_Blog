@@ -54,7 +54,11 @@
           </div>
 
           <!-- 图片显示区域 -->
-          <div class="viewer-image-wrapper" @wheel.prevent="handleWheel">
+          <div 
+            class="viewer-image-wrapper" 
+            @wheel.prevent="handleWheel"
+            @click="handleImageAreaClick"
+          >
             <div 
               class="viewer-image-container"
               :style="imageStyle"
@@ -151,11 +155,16 @@ const imageStyle = computed(() => ({
 }))
 
 // 拖拽功能
+let mouseDownTime = 0
+let mouseDownPos = { x: 0, y: 0 }
+
 function handleMouseDown(event) {
   if (event.button !== 0) return
   isDragging.value = true
   dragStartX.value = event.clientX - translateX.value
   dragStartY.value = event.clientY - translateY.value
+  mouseDownTime = Date.now()
+  mouseDownPos = { x: event.clientX, y: event.clientY }
   document.body.style.cursor = 'grabbing'
 }
 
@@ -168,6 +177,22 @@ function handleMouseMove(event) {
 function handleMouseUp() {
   isDragging.value = false
   document.body.style.cursor = ''
+}
+
+// 图片区域点击关闭
+function handleImageAreaClick(event) {
+  const timeDiff = Date.now() - mouseDownTime
+  const moveDiff = Math.sqrt(
+    Math.pow(event.clientX - mouseDownPos.x, 2) + 
+    Math.pow(event.clientY - mouseDownPos.y, 2)
+  )
+  
+  if (timeDiff < 300 && moveDiff < 10 && !isDragging.value) {
+    const target = event.target
+    if (!target.closest('.viewer-toolbar') && !target.closest('.toolbar-btn')) {
+      closeViewer()
+    }
+  }
 }
 
 // 键盘事件
