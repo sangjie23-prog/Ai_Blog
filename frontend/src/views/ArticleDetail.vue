@@ -523,19 +523,19 @@ onMounted(async () => {
   color: inherit;
 }
 
-/* 专业代码块样式 */
+/* 专业代码块样式 - 跟随博客系统主题 */
 .article-content :deep(.professional-code-block) {
   margin: 1.5rem 0;
   border-radius: 12px;
   overflow: hidden;
-  background: #1e1e1e;
-  border: 1px solid #2d2d2d;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--code-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
 .article-content :deep(.professional-code-block:hover) {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .article-content :deep(.professional-code-block.is-collapsed) {
@@ -548,8 +548,8 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: #252526;
-  border-bottom: 1px solid #2d2d2d;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   user-select: none;
 }
 
@@ -562,14 +562,13 @@ onMounted(async () => {
 .article-content :deep(.code-language) {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #569cd6;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--text-color);
+  letter-spacing: 0.3px;
 }
 
 .article-content :deep(.code-lines-count) {
   font-size: 0.75rem;
-  color: #858585;
+  color: var(--text-tertiary);
 }
 
 .article-content :deep(.code-header-actions) {
@@ -587,23 +586,23 @@ onMounted(async () => {
   padding: 0;
   border: none;
   background: transparent;
-  color: #858585;
+  color: var(--text-tertiary);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .article-content :deep(.code-action-btn:hover) {
-  background: #3c3c3c;
-  color: #cccccc;
+  background: var(--hover-bg);
+  color: var(--text-color);
 }
 
 .article-content :deep(.code-copy-btn.copied) {
-  color: #4ec9b0;
+  color: var(--success-color);
 }
 
 .article-content :deep(.code-copy-btn.copied:hover) {
-  background: rgba(78, 201, 176, 0.1);
+  background: rgba(40, 167, 69, 0.1);
 }
 
 /* 代码内容区域 */
@@ -632,7 +631,7 @@ onMounted(async () => {
   word-break: break-all;
 }
 
-/* 代码表格布局 */
+/* 代码表格布局 - 无横线设计 */
 .article-content :deep(.code-table) {
   width: 100%;
   border-collapse: collapse;
@@ -648,83 +647,83 @@ onMounted(async () => {
 }
 
 .article-content :deep(.line-number) {
-  width: 3.5rem;
-  min-width: 3.5rem;
-  padding: 0 1rem 0 1.5rem;
+  width: 3rem;
+  min-width: 3rem;
+  padding: 0 0.75rem 0 1rem;
   text-align: right;
-  color: #858585;
-  background: #1e1e1e;
-  border-right: 1px solid #2d2d2d;
+  color: var(--text-tertiary);
+  background: var(--code-bg);
   user-select: none;
   font-size: 0.8125rem;
   vertical-align: top;
+  opacity: 0.6;
 }
 
 .article-content :deep(.line-content) {
-  padding: 0 1.5rem 0 1rem;
-  color: #d4d4d4;
+  padding: 0 1rem 0 0.75rem;
+  color: var(--text-color);
   vertical-align: top;
   white-space: pre;
 }
 
 /* 代码行悬停效果 */
 .article-content :deep(.code-table tr:hover .line-number) {
-  color: #cccccc;
-  background: #2a2d2e;
+  color: var(--text-secondary);
+  opacity: 1;
 }
 
 .article-content :deep(.code-table tr:hover .line-content) {
-  background: #2a2d2e;
+  background: var(--hover-bg);
 }
 
-/* 语法高亮样式 - VS Code Dark+ 主题 */
-.article-content :deep(.code-table .hljs-keyword) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-built_in) { color: #4ec9b0; }
-.article-content :deep(.code-table .hljs-type) { color: #4ec9b0; }
-.article-content :deep(.code-table .hljs-literal) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-number) { color: #b5cea8; }
-.article-content :deep(.code-table .hljs-regexp) { color: #d16969; }
-.article-content :deep(.code-table .hljs-string) { color: #ce9178; }
-.article-content :deep(.code-table .hljs-title) { color: #dcdcaa; }
-.article-content :deep(.code-table .hljs-function) { color: #dcdcaa; }
-.article-content :deep(.code-table .hljs-params) { color: #9cdcfe; }
-.article-content :deep(.code-table .hljs-comment) { color: #6a9955; font-style: italic; }
-.article-content :deep(.code-table .hljs-meta) { color: #9b9b9b; }
-.article-content :deep(.code-table .hljs-tag) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-attribute) { color: #92c5f7; }
-.article-content :deep(.code-table .hljs-variable) { color: #9cdcfe; }
-.article-content :deep(.code-table .hljs-selector-tag) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-selector-class) { color: #d7ba7d; }
-.article-content :deep(.code-table .hljs-selector-id) { color: #d7ba7d; }
-.article-content :deep(.code-table .hljs-selector-pseudo) { color: #d7ba7d; }
-.article-content :deep(.code-table .hljs-section) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-name) { color: #569cd6; }
-.article-content :deep(.code-table .hljs-attr) { color: #92c5f7; }
-.article-content :deep(.code-table .hljs-symbol) { color: #4ec9b0; }
-.article-content :deep(.code-table .hljs-bullet) { color: #4ec9b0; }
-.article-content :deep(.code-table .hljs-link) { color: #569cd6; text-decoration: underline; }
+/* 语法高亮样式 - Gemini 风格 */
+.article-content :deep(.code-table .hljs-keyword) { color: #c678dd; }
+.article-content :deep(.code-table .hljs-built_in) { color: #e5c07b; }
+.article-content :deep(.code-table .hljs-type) { color: #e5c07b; }
+.article-content :deep(.code-table .hljs-literal) { color: #c678dd; }
+.article-content :deep(.code-table .hljs-number) { color: #d19a66; }
+.article-content :deep(.code-table .hljs-regexp) { color: #e06c75; }
+.article-content :deep(.code-table .hljs-string) { color: #98c379; }
+.article-content :deep(.code-table .hljs-title) { color: #61afef; }
+.article-content :deep(.code-table .hljs-function) { color: #61afef; }
+.article-content :deep(.code-table .hljs-params) { color: #abb2bf; }
+.article-content :deep(.code-table .hljs-comment) { color: #7f848e; font-style: italic; }
+.article-content :deep(.code-table .hljs-meta) { color: #7f848e; }
+.article-content :deep(.code-table .hljs-tag) { color: #e06c75; }
+.article-content :deep(.code-table .hljs-attribute) { color: #d19a66; }
+.article-content :deep(.code-table .hljs-variable) { color: #e06c75; }
+.article-content :deep(.code-table .hljs-selector-tag) { color: #e06c75; }
+.article-content :deep(.code-table .hljs-selector-class) { color: #61afef; }
+.article-content :deep(.code-table .hljs-selector-id) { color: #61afef; }
+.article-content :deep(.code-table .hljs-selector-pseudo) { color: #61afef; }
+.article-content :deep(.code-table .hljs-section) { color: #e5c07b; }
+.article-content :deep(.code-table .hljs-name) { color: #e06c75; }
+.article-content :deep(.code-table .hljs-attr) { color: #d19a66; }
+.article-content :deep(.code-table .hljs-symbol) { color: #56b6c2; }
+.article-content :deep(.code-table .hljs-bullet) { color: #56b6c2; }
+.article-content :deep(.code-table .hljs-link) { color: #61afef; text-decoration: underline; }
 .article-content :deep(.code-table .hljs-emphasis) { font-style: italic; }
 .article-content :deep(.code-table .hljs-strong) { font-weight: bold; }
-.article-content :deep(.code-table .hljs-formula) { color: #d4d4d4; }
-.article-content :deep(.code-table .hljs-quote) { color: #6a9955; font-style: italic; }
+.article-content :deep(.code-table .hljs-formula) { color: #abb2bf; }
+.article-content :deep(.code-table .hljs-quote) { color: #7f848e; font-style: italic; }
 
 /* 滚动条样式 */
 .article-content :deep(.code-scroll-wrapper::-webkit-scrollbar) {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 .article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-track) {
-  background: #1e1e1e;
+  background: transparent;
 }
 
 .article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-thumb) {
-  background: #424242;
-  border-radius: 4px;
+  background: var(--border-color);
+  border-radius: 3px;
 }
 
 .article-content :deep(.code-scroll-wrapper::-webkit-scrollbar-thumb:hover) {
-  background: #4f4f4f;
+  background: var(--text-tertiary);
 }
 
 .article-content :deep(blockquote) {
