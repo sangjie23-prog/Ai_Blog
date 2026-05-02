@@ -68,11 +68,6 @@
               />
             </div>
           </div>
-
-          <!-- 底部提示 -->
-          <div class="viewer-hint">
-            <span>滚轮缩放 · 拖拽移动 · ESC 关闭</span>
-          </div>
         </div>
       </div>
     </Transition>
@@ -368,21 +363,6 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-/* 底部提示 */
-.viewer-hint {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-  pointer-events: none;
-}
-
 /* 过渡动画 */
 .viewer-fade-enter-active,
 .viewer-fade-leave-active {
@@ -422,11 +402,6 @@ onUnmounted(() => {
   .zoom-level {
     font-size: 12px;
     min-width: 40px;
-  }
-  
-  .viewer-hint {
-    font-size: 11px;
-    padding: 6px 12px;
   }
 }
 
