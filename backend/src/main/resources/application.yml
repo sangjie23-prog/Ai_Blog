@@ -35,3 +35,14 @@ mybatis-plus:
 jwt:
   secret: aiblog-jwt-secret-key-2024-very-long-string-for-security
   expiration: 86400000  # 24小时（毫秒）
+
+# 文件上传配置
+upload:
+  path: uploads/images
+  max-size: 10485760  # 10MB
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

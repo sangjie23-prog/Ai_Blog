@@ -51,8 +51,8 @@
         <button type="button" class="toolbar-btn" @click="insertLink" title="链接">
           <span>🔗 链接</span>
         </button>
-        <button type="button" class="toolbar-btn" @click="insertImage" title="图片">
-          <span>🖼️ 图片</span>
+        <button type="button" class="toolbar-btn" @click="triggerImageUpload" title="上传图片">
+          <span>🖼️ 上传图片</span>
         </button>
         <button type="button" class="toolbar-btn" @click="insertCodeBlock" title="代码块">
           <span>``` 代码</span>
@@ -88,9 +88,14 @@
           ref="editorRef"
           v-model="localContent"
           class="editor-textarea"
+          :class="{ 'drag-over': isDragging }"
           placeholder="在此输入 Markdown 内容..."
           @input="handleInput"
           @keydown="handleKeydown"
+          @paste="handlePaste"
+          @dragover="handleDragOver"
+          @dragleave="handleDragLeave"
+          @drop="handleDrop"
         ></textarea>
       </div>
 
@@ -101,9 +106,14 @@
             ref="editorRef"
             v-model="localContent"
             class="editor-textarea"
+            :class="{ 'drag-over': isDragging }"
             placeholder="在此输入 Markdown 内容..."
             @input="handleInput"
             @keydown="handleKeydown"
+            @paste="handlePaste"
+            @dragover="handleDragOver"
+            @dragleave="handleDragLeave"
+            @drop="handleDrop"
           ></textarea>
         </div>
         <div class="preview-pane">
@@ -126,6 +136,9 @@
         <span v-if="lastSaved" class="status-item">
           上次保存: {{ lastSaved }}
         </span>
+        <span v-if="uploading" class="status-item uploading">
+          上传中... {{ uploadProgress }}%
+        </span>
       </div>
       <div class="statusbar-right">
         <button type="button" class="view-btn" :class="{ active: viewMode === 'edit' }" @click="viewMode = 'edit'">编辑</button>
@@ -133,6 +146,15 @@
         <button type="button" class="view-btn" :class="{ active: viewMode === 'preview' }" @click="viewMode = 'preview'">预览</button>
       </div>
     </div>
+
+    <!-- 隐藏的文件输入 -->
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept="image/jpeg,image/png,image/gif,image/webp,image/bmp"
+      style="display: none"
+      @change="handleFileSelect"
+    />
   </div>
 </template>
 
@@ -141,6 +163,7 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
+import { uploadImage } from '../api/admin/upload'
 
 const props = defineProps({
   modelValue: {
@@ -156,10 +179,14 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 const editorRef = ref(null)
+const fileInputRef = ref(null)
 const localContent = ref(props.modelValue)
 const viewMode = ref('split')
 const autoSaveEnabled = ref(true)
 const lastSaved = ref('')
+const uploading = ref(false)
+const uploadProgress = ref(0)
+const isDragging = ref(false)
 let autoSaveTimer = null
 
 // Markdown 渲染器
@@ -319,12 +346,100 @@ function insertLink() {
   insertText(`[${text}](${url})`)
 }
 
-// 插入图片
-function insertImage() {
-  const url = prompt('请输入图片地址:', 'https://')
-  if (!url) return
-  const alt = prompt('请输入图片描述:', '图片描述') || '图片'
-  insertText(`![${alt}](${url})`)
+// 触发图片上传
+function triggerImageUpload() {
+  if (fileInputRef.value) {
+    fileInputRef.value.click()
+  }
+}
+
+// 处理文件选择
+function handleFileSelect(event) {
+  const file = event.target.files[0]
+  if (file) {
+    uploadAndInsertImage(file)
+    event.target.value = ''
+  }
+}
+
+// 上传图片并插入到编辑器
+async function uploadAndInsertImage(file) {
+  const maxSize = 10 * 1024 * 1024
+  if (file.size > maxSize) {
+    alert('图片大小不能超过 10MB')
+    return
+  }
+
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp']
+  if (!allowedTypes.includes(file.type)) {
+    alert('仅支持 JPG、PNG、GIF、WebP、BMP 格式的图片')
+    return
+  }
+
+  uploading.value = true
+  uploadProgress.value = 0
+
+  try {
+    const res = await uploadImage(file)
+    const imageUrl = res.data
+    const alt = file.name.replace(/\.[^/.]+$/, '')
+    insertText(`![${alt}](${imageUrl})`)
+    uploadProgress.value = 100
+  } catch (error) {
+    alert('图片上传失败: ' + (error.message || '未知错误'))
+  } finally {
+    uploading.value = false
+    setTimeout(() => {
+      uploadProgress.value = 0
+    }, 2000)
+  }
+}
+
+// 处理粘贴事件
+async function handlePaste(event) {
+  const items = event.clipboardData?.items
+  if (!items) return
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+    if (item.type.indexOf('image') !== -1) {
+      event.preventDefault()
+      const file = item.getAsFile()
+      if (file) {
+        await uploadAndInsertImage(file)
+      }
+      return
+    }
+  }
+}
+
+// 处理拖拽事件
+function handleDragOver(event) {
+  event.preventDefault()
+  event.stopPropagation()
+  isDragging.value = true
+}
+
+function handleDragLeave(event) {
+  event.preventDefault()
+  event.stopPropagation()
+  isDragging.value = false
+}
+
+async function handleDrop(event) {
+  event.preventDefault()
+  event.stopPropagation()
+  isDragging.value = false
+
+  const files = event.dataTransfer?.files
+  if (!files || files.length === 0) return
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    if (file.type.startsWith('image/')) {
+      await uploadAndInsertImage(file)
+    }
+  }
 }
 
 // 插入代码块
@@ -543,6 +658,11 @@ onUnmounted(() => {
   color: var(--text-tertiary);
 }
 
+.editor-textarea.drag-over {
+  background-color: var(--accent-light);
+  border: 2px dashed var(--accent-color);
+}
+
 /* Markdown 预览 */
 .markdown-preview {
   padding: 20px;
@@ -712,6 +832,11 @@ onUnmounted(() => {
 .status-item.active {
   color: var(--success-color);
   cursor: pointer;
+}
+
+.status-item.uploading {
+  color: var(--accent-color);
+  font-weight: 500;
 }
 
 .statusbar-right {
