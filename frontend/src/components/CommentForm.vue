@@ -2,6 +2,16 @@
   <div class="comment-section">
     <h3 class="section-title">评论 ({{ comments.length }})</h3>
 
+    <!-- 提示消息 -->
+    <div v-if="successMsg" class="alert alert-success">
+      <span class="alert-icon">✅</span>
+      <span class="alert-content">{{ successMsg }}</span>
+    </div>
+    <div v-if="errorMsg" class="alert alert-error">
+      <span class="alert-icon">⚠️</span>
+      <span class="alert-content">{{ errorMsg }}</span>
+    </div>
+
     <!-- 评论列表 -->
     <div class="comment-list">
       <div v-for="comment in comments" :key="comment.id" class="comment-item">
@@ -45,6 +55,8 @@ const props = defineProps({
 })
 
 const comments = ref([])
+const successMsg = ref('')
+const errorMsg = ref('')
 const form = ref({
   articleId: props.articleId,
   nickname: '',
@@ -60,19 +72,23 @@ async function loadComments() {
     comments.value = res.data || []
   } catch (error) {
     console.error('加载评论失败:', error)
+    errorMsg.value = '加载评论失败，请刷新页面重试'
   }
 }
 
 // 提交评论
 async function handleSubmit() {
   submitting.value = true
+  successMsg.value = ''
+  errorMsg.value = ''
   try {
     await submitComment(form.value)
-    alert('评论已提交，等待审核')
+    successMsg.value = '评论已提交，等待审核'
     form.value.content = ''
+    loadComments()
   } catch (error) {
     console.error('提交评论失败:', error)
-    alert('提交失败，请重试')
+    errorMsg.value = '提交失败，请检查网络后重试'
   } finally {
     submitting.value = false
   }

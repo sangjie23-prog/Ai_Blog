@@ -70,6 +70,13 @@ const themeStore = useThemeStore()
   background-color: var(--footer-bg);
   color: var(--footer-text);
   margin-top: auto;
+  /* 确保背景正确显示 */
+  background-image: none;
+}
+
+/* 深色模式下 Footer 背景增强 */
+.dark-mode .footer {
+  background-image: linear-gradient(180deg, rgba(88, 166, 255, 0.02) 0%, transparent 100%);
 }
 
 .footer-inner {

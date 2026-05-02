@@ -130,7 +130,7 @@ async function handleLike() {
 
 function copyLink() {
   navigator.clipboard.writeText(window.location.href)
-  alert('链接已复制到剪贴板')
+  alert('✅ 链接已复制到剪贴板')
 }
 
 function formatDate(dateStr) {
@@ -289,11 +289,12 @@ onMounted(() => {
 
 .article-content :deep(blockquote) {
   border-left: 4px solid var(--accent-color);
-  padding: var(--space-sm) var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
   margin: var(--space-md) 0;
-  color: var(--text-secondary);
+  color: var(--text-color);
   background-color: var(--bg-secondary);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
 }
 
 .article-content :deep(img) {

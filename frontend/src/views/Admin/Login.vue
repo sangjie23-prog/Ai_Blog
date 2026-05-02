@@ -26,7 +26,10 @@
           />
         </div>
         
-        <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
+        <div v-if="errorMsg" class="alert alert-error">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-content">{{ errorMsg }}</span>
+        </div>
         
         <button type="submit" class="login-btn" :disabled="loading">
           {{ loading ? '登录中...' : '登录' }}
@@ -139,15 +142,6 @@ async function handleLogin() {
 .form-group input:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px var(--accent-light);
-}
-
-.error-msg {
-  color: var(--error-color);
-  font-size: 0.9375rem;
-  text-align: center;
-  padding: var(--space-sm);
-  background-color: rgba(248, 81, 73, 0.1);
-  border-radius: var(--radius-md);
 }
 
 .login-btn {

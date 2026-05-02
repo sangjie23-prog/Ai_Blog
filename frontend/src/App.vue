@@ -36,26 +36,27 @@ onMounted(() => {
   --bg-secondary: #f6f6f6;
   --bg-tertiary: #eef0f2;
   --text-color: #15171a;
-  --text-secondary: #738a94;
-  --text-tertiary: #9ca3af;
+  --text-secondary: #5a6b78;
+  --text-tertiary: #7c8a96;
   --border-color: #e5eff5;
   --border-light: #f0f0f0;
   --accent-color: #3eb0ef;
   --accent-hover: #3498db;
   --accent-light: rgba(62, 176, 239, 0.1);
   --card-bg: #ffffff;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --header-bg: rgba(255, 255, 255, 0.95);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --header-bg: rgba(255, 255, 255, 0.98);
   --header-blur: blur(12px);
   --footer-bg: #15171a;
   --footer-text: #ffffff;
   --code-bg: #f5f7f9;
   --code-text: #d63384;
   --hover-bg: #f5f7f9;
-  --success-color: #2ecc71;
-  --warning-color: #f39c12;
-  --error-color: #e74c3c;
+  --success-color: #28a745;
+  --warning-color: #e67e22;
+  --error-color: #dc3545;
+  --info-color: #17a2b8;
   --input-bg: #ffffff;
   --input-border: #d1d5db;
   --input-focus-border: #3eb0ef;
@@ -64,10 +65,24 @@ onMounted(() => {
   --btn-secondary-bg: #f5f7f9;
   --btn-secondary-text: #15171a;
   --tag-bg: #eef0f2;
-  --tag-text: #738a94;
+  --tag-text: #5a6b78;
   --overlay-bg: rgba(0, 0, 0, 0.5);
   --scrollbar-thumb: #c1c1c1;
   --scrollbar-track: #f1f1f1;
+  
+  /* 提示框配色 - 浅色模式 */
+  --alert-success-bg: #d4edda;
+  --alert-success-text: #155724;
+  --alert-success-border: #c3e6cb;
+  --alert-warning-bg: #fff3cd;
+  --alert-warning-text: #856404;
+  --alert-warning-border: #ffeeba;
+  --alert-error-bg: #f8d7da;
+  --alert-error-text: #721c24;
+  --alert-error-border: #f5c6cb;
+  --alert-info-bg: #d1ecf1;
+  --alert-info-text: #0c5460;
+  --alert-info-border: #bee5eb;
   
   /* 排版 */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -108,38 +123,54 @@ onMounted(() => {
   --bg-color: #0d1117;
   --bg-secondary: #161b22;
   --bg-tertiary: #21262d;
-  --text-color: #e6edf3;
-  --text-secondary: #8b949e;
-  --text-tertiary: #6e7681;
+  /* 优化文字对比度，确保符合 WCAG AA 级标准 */
+  --text-color: #f0f6fc;
+  --text-secondary: #b0bac4;
+  --text-tertiary: #8b949e;
   --border-color: #30363d;
   --border-light: #21262d;
   --accent-color: #58a6ff;
   --accent-hover: #79b8ff;
   --accent-light: rgba(88, 166, 255, 0.15);
   --card-bg: #161b22;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3);
-  --header-bg: rgba(13, 17, 23, 0.95);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --header-bg: rgba(13, 17, 23, 0.98);
   --footer-bg: #010409;
-  --footer-text: #e6edf3;
+  --footer-text: #f0f6fc;
   --code-bg: #1c2128;
   --code-text: #ff7b72;
   --hover-bg: #21262d;
   --success-color: #3fb950;
   --warning-color: #d29922;
   --error-color: #f85149;
+  --info-color: #58a6ff;
   --input-bg: #0d1117;
   --input-border: #30363d;
   --input-focus-border: #58a6ff;
   --btn-primary-bg: #58a6ff;
   --btn-primary-text: #0d1117;
   --btn-secondary-bg: #21262d;
-  --btn-secondary-text: #e6edf3;
+  --btn-secondary-text: #f0f6fc;
   --tag-bg: #21262d;
-  --tag-text: #8b949e;
-  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --tag-text: #b0bac4;
+  --overlay-bg: rgba(0, 0, 0, 0.75);
   --scrollbar-thumb: #484f58;
   --scrollbar-track: #161b22;
+  
+  /* 提示框配色 - 深色模式（优化对比度） */
+  --alert-success-bg: #1a3a2a;
+  --alert-success-text: #7ee8a0;
+  --alert-success-border: #2d5a3f;
+  --alert-warning-bg: #3d2e1a;
+  --alert-warning-text: #f0c878;
+  --alert-warning-border: #5a4528;
+  --alert-error-bg: #3d1a1a;
+  --alert-error-text: #f88a8a;
+  --alert-error-border: #5a2828;
+  --alert-info-bg: #1a2d3d;
+  --alert-info-text: #78c8f0;
+  --alert-info-border: #28455a;
 }
 
 html {
@@ -147,6 +178,7 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -156,6 +188,47 @@ body {
   line-height: 1.7;
   font-size: 16px;
   transition: background-color var(--transition-base), color var(--transition-base);
+  /* 确保背景正确显示 */
+  background-image: none;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* 优化文字渲染 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 深色模式下文字增强 */
+.dark-mode body {
+  /* 添加微妙的渐变背景，提升视觉层次 */
+  background-image: radial-gradient(ellipse at top, rgba(88, 166, 255, 0.03) 0%, transparent 50%);
+  /* 确保深色模式下文字清晰 */
+  text-shadow: 0 0 1px rgba(240, 246, 252, 0.1);
+}
+
+/* 深色模式下所有文字清晰度增强 */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.dark-mode p,
+.dark-mode span,
+.dark-mode div,
+.dark-mode li,
+.dark-mode td,
+.dark-mode th {
+  color: var(--text-color);
+}
+
+.dark-mode .text-secondary,
+.dark-mode [class*="text-secondary"] {
+  color: var(--text-secondary) !important;
 }
 
 /* 滚动条样式 */
@@ -279,6 +352,61 @@ a:hover {
 .card:hover {
   box-shadow: var(--card-shadow-hover);
   border-color: var(--accent-color);
+}
+
+/* 提示框样式 - 统一美观设计 */
+.alert {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  margin-bottom: var(--space-md);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  animation: slideDown var(--transition-base) ease-out;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-success {
+  background-color: var(--alert-success-bg);
+  color: var(--alert-success-text);
+  border-color: var(--alert-success-border);
+}
+
+.alert-warning {
+  background-color: var(--alert-warning-bg);
+  color: var(--alert-warning-text);
+  border-color: var(--alert-warning-border);
+}
+
+.alert-error {
+  background-color: var(--alert-error-bg);
+  color: var(--alert-error-text);
+  border-color: var(--alert-error-border);
+}
+
+.alert-info {
+  background-color: var(--alert-info-bg);
+  color: var(--alert-info-text);
+  border-color: var(--alert-info-border);
+}
+
+/* 深色模式下提示框优化 */
+.dark-mode .alert {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* 标签样式 */
