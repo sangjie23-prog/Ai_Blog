@@ -231,6 +231,195 @@ body {
   color: var(--text-secondary) !important;
 }
 
+/* 深色模式下全局元素亮度增强 */
+.dark-mode .status-badge.published {
+  background-color: rgba(63, 185, 80, 0.2) !important;
+  color: #56d364 !important;
+}
+
+.dark-mode .status-badge.draft {
+  background-color: rgba(210, 153, 34, 0.2) !important;
+  color: #e3b341 !important;
+}
+
+.dark-mode .btn-edit {
+  background-color: rgba(88, 166, 255, 0.2) !important;
+  color: #58a6ff !important;
+}
+
+.dark-mode .btn-delete {
+  background-color: rgba(248, 81, 73, 0.2) !important;
+  color: #f85149 !important;
+}
+
+.dark-mode .edit-btn {
+  background-color: #1f6feb !important;
+}
+
+.dark-mode .publish-btn {
+  background-color: #238636 !important;
+}
+
+.dark-mode .unpublish-btn {
+  background-color: #9e6a03 !important;
+}
+
+.dark-mode .delete-btn {
+  background-color: #da3633 !important;
+}
+
+/* 深色模式下表格样式增强 */
+.dark-mode table,
+.dark-mode .data-table,
+.dark-mode .article-table {
+  border-color: var(--border-color);
+}
+
+.dark-mode th,
+.dark-mode .data-table th {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode td {
+  color: var(--text-color) !important;
+}
+
+/* 深色模式下对话框增强 */
+.dark-mode .dialog {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color);
+}
+
+.dark-mode .dialog-overlay {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 深色模式下空状态增强 */
+.dark-mode .empty-state,
+.dark-mode .empty-msg,
+.dark-mode .empty {
+  color: var(--text-secondary) !important;
+}
+
+/* 深色模式下分页增强 */
+.dark-mode .pagination button,
+.dark-mode .page-btn {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-mode .pagination span,
+.dark-mode .page-info {
+  color: var(--text-secondary) !important;
+}
+
+/* 深色模式下搜索框增强 */
+.dark-mode .search-box {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-mode .search-input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--input-border) !important;
+}
+
+.dark-mode .tab-btn {
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode .tab-btn.active {
+  color: var(--accent-color) !important;
+  border-bottom-color: var(--accent-color) !important;
+}
+
+/* 深色模式下表单增强 */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--input-border) !important;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+.dark-mode label {
+  color: var(--text-secondary) !important;
+}
+
+/* 深色模式下按钮全局增强 */
+.dark-mode button:not(.action-btn):not(.tab-btn):not(.share-btn):not(.like-btn):not(.theme-toggle):not(.theme-toggle-footer):not(.mobile-menu-btn):not(.page-btn):not(.search-btn):not(.new-btn):not(.add-btn):not(.logout-btn):not(.login-btn):not(.submit-btn):not(.clear-btn):not(.btn-cancel):not(.btn-submit):not(.btn-edit):not(.btn-delete):not(.edit-btn):not(.publish-btn):not(.unpublish-btn):not(.delete-btn):not(.publish-btn):not([class*="btn-primary"]):not([class*="btn-secondary"]) {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+}
+
+/* 深色模式下代码块增强 */
+.dark-mode code {
+  background-color: var(--code-bg) !important;
+  color: var(--code-text) !important;
+}
+
+.dark-mode pre {
+  background-color: var(--code-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 深色模式下引用块增强 */
+.dark-mode blockquote {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-color) !important;
+  border-left-color: var(--accent-color) !important;
+}
+
+/* 深色模式下图片增强 */
+.dark-mode img {
+  opacity: 0.9;
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* 深色模式下分割线增强 */
+.dark-mode .article-divider,
+.dark-mode hr {
+  background-color: var(--border-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 深色模式下加载动画增强 */
+.dark-mode .loading-spinner {
+  border-color: var(--border-color) !important;
+  border-top-color: var(--accent-color) !important;
+}
+
+.dark-mode .loading-text {
+  color: var(--text-secondary) !important;
+}
+
+/* 深色模式下未找到状态增强 */
+.dark-mode .not-found {
+  color: var(--text-color) !important;
+}
+
+.dark-mode .not-found-title {
+  color: var(--text-color) !important;
+}
+
+.dark-mode .not-found-desc {
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode .back-link {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
 /* 滚动条样式 */
 ::-webkit-scrollbar {
   width: 8px;

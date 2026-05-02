@@ -280,13 +280,13 @@ td {
 }
 
 .status-badge.published {
-  background-color: rgba(46, 125, 50, 0.1);
-  color: #2e7d32;
+  background-color: rgba(63, 185, 80, 0.15);
+  color: #3fb950;
 }
 
 .status-badge.draft {
-  background-color: rgba(230, 81, 0, 0.1);
-  color: #e65100;
+  background-color: rgba(210, 153, 34, 0.15);
+  color: #d29922;
 }
 
 .action-cell {
