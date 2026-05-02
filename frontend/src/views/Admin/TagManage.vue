@@ -63,8 +63,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, inject } from 'vue'
 import { getTags, createTag, updateTag, deleteTag } from '../../api/admin/tag'
+
+const toast = inject('toast')
 
 const tags = ref([])
 const dialogVisible = ref(false)
@@ -90,7 +92,7 @@ async function loadTags() {
     const res = await getTags()
     tags.value = res.data || []
   } catch (error) {
-    alert('加载失败')
+    toast.value?.error('加载失败')
   }
 }
 
@@ -129,15 +131,15 @@ async function handleSubmit() {
   try {
     if (isEdit.value) {
       await updateTag(currentId.value, form)
-      alert('更新成功')
+      toast.value?.success('更新成功')
     } else {
       await createTag(form)
-      alert('创建成功')
+      toast.value?.success('创建成功')
     }
     closeDialog()
     await loadTags()
   } catch (error) {
-    alert(error.response?.data?.message || '操作失败')
+    toast.value?.error(error.response?.data?.message || '操作失败')
   } finally {
     loading.value = false
   }
@@ -148,10 +150,10 @@ async function handleDelete(item) {
   if (!confirm(`确定要删除标签"${item.name}"吗？`)) return
   try {
     await deleteTag(item.id)
-    alert('删除成功')
+    toast.value?.success('删除成功')
     await loadTags()
   } catch (error) {
-    alert(error.response?.data?.message || '删除失败')
+    toast.value?.error(error.response?.data?.message || '删除失败')
   }
 }
 

@@ -5,17 +5,22 @@
       <router-view />
     </main>
     <Footer />
+    <Toast ref="toastRef" />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, provide } from 'vue'
 import { useThemeStore } from './stores/theme'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import Toast from './components/Toast.vue'
 
 const themeStore = useThemeStore()
 const isEyeCareTheme = computed(() => themeStore.isEyeCare)
+const toastRef = ref(null)
+
+provide('toast', toastRef)
 
 onMounted(() => {
   document.documentElement.classList.toggle('eye-care', isEyeCareTheme.value)

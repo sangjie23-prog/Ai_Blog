@@ -69,11 +69,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAdminArticles, publishArticle, unpublishArticle, deleteAdminArticle, setTopArticle, unsetTopArticle } from '../../api/admin/article'
 
 const router = useRouter()
+const toast = inject('toast')
 
 const articles = ref([])
 const loading = ref(false)
@@ -102,7 +103,7 @@ async function loadArticles() {
     articles.value = res.data.records
     total.value = res.data.total
   } catch (error) {
-    console.error('加载文章失败:', error)
+    toast.value?.error('加载文章失败')
   } finally {
     loading.value = false
   }
@@ -130,9 +131,10 @@ async function handlePublish(id) {
   if (!confirm('确定发布这篇文章吗？')) return
   try {
     await publishArticle(id)
+    toast.value?.success('发布成功')
     loadArticles()
   } catch (error) {
-    alert('发布失败')
+    toast.value?.error('发布失败')
   }
 }
 
@@ -141,9 +143,10 @@ async function handleUnpublish(id) {
   if (!confirm('确定撤回这篇文章吗？')) return
   try {
     await unpublishArticle(id)
+    toast.value?.success('已撤回为草稿')
     loadArticles()
   } catch (error) {
-    alert('撤回失败')
+    toast.value?.error('撤回失败')
   }
 }
 
@@ -151,9 +154,10 @@ async function handleUnpublish(id) {
 async function handleSetTop(id) {
   try {
     await setTopArticle(id)
+    toast.value?.success('置顶成功')
     loadArticles()
   } catch (error) {
-    alert('置顶失败')
+    toast.value?.error('置顶失败')
   }
 }
 
@@ -161,9 +165,10 @@ async function handleSetTop(id) {
 async function handleUnsetTop(id) {
   try {
     await unsetTopArticle(id)
+    toast.value?.success('已取消置顶')
     loadArticles()
   } catch (error) {
-    alert('取消置顶失败')
+    toast.value?.error('取消置顶失败')
   }
 }
 
@@ -172,9 +177,10 @@ async function handleDelete(id) {
   if (!confirm('确定删除这篇文章吗？此操作不可恢复。')) return
   try {
     await deleteAdminArticle(id)
+    toast.value?.success('删除成功')
     loadArticles()
   } catch (error) {
-    alert('删除失败')
+    toast.value?.error('删除失败')
   }
 }
 

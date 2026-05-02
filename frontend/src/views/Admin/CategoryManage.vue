@@ -73,8 +73,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, inject } from 'vue'
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../../api/admin/category'
+
+const toast = inject('toast')
 
 const categories = ref([])
 const dialogVisible = ref(false)
@@ -95,7 +97,7 @@ async function loadCategories() {
     const res = await getCategories()
     categories.value = res.data || []
   } catch (error) {
-    alert('加载失败')
+    toast.value?.error('加载失败')
   }
 }
 
@@ -138,15 +140,15 @@ async function handleSubmit() {
   try {
     if (isEdit.value) {
       await updateCategory(currentId.value, form)
-      alert('更新成功')
+      toast.value?.success('更新成功')
     } else {
       await createCategory(form)
-      alert('创建成功')
+      toast.value?.success('创建成功')
     }
     closeDialog()
     await loadCategories()
   } catch (error) {
-    alert(error.response?.data?.message || '操作失败')
+    toast.value?.error(error.response?.data?.message || '操作失败')
   } finally {
     loading.value = false
   }
@@ -157,10 +159,10 @@ async function handleDelete(item) {
   if (!confirm(`确定要删除分类"${item.name}"吗？`)) return
   try {
     await deleteCategory(item.id)
-    alert('删除成功')
+    toast.value?.success('删除成功')
     await loadCategories()
   } catch (error) {
-    alert(error.response?.data?.message || '删除失败')
+    toast.value?.error(error.response?.data?.message || '删除失败')
   }
 }
 

@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { getArticleDetail, likeArticle } from '../api/article'
 import MarkdownIt from 'markdown-it'
@@ -94,6 +94,7 @@ import CommentForm from '../components/CommentForm.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 
 const route = useRoute()
+const toast = inject('toast')
 const article = ref(null)
 const loading = ref(false)
 
@@ -150,7 +151,7 @@ async function handleLike() {
 
 function copyLink() {
   navigator.clipboard.writeText(window.location.href)
-  alert('✅ 链接已复制到剪贴板')
+  toast.value?.success('链接已复制到剪贴板')
 }
 
 function formatDate(dateStr) {

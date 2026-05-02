@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MarkdownEditor from '../../components/MarkdownEditor.vue'
 import { getAdminArticle, createAdminArticle, updateAdminArticle, publishArticle } from '../../api/admin/article'
@@ -84,6 +84,7 @@ import { generateSummary, generateTags } from '../../api/admin/ai'
 
 const route = useRoute()
 const router = useRouter()
+const toast = inject('toast')
 
 const isEdit = computed(() => !!route.params.id)
 const articleId = computed(() => route.params.id)
@@ -127,7 +128,7 @@ async function loadArticle() {
     form.tags = article.tags || ''
     form.isTop = article.isTop || 0
   } catch (error) {
-    alert('加载文章失败')
+    toast.value?.error('加载文章失败')
     router.push('/admin/articles')
   }
 }
@@ -152,10 +153,10 @@ async function handleSubmit() {
     }
 
     editorRef.value?.clearAutoSave()
-    alert('保存成功')
+    toast.value?.success('保存成功')
     router.push('/admin/articles')
   } catch (error) {
-    alert('保存失败')
+    toast.value?.error('保存失败')
   } finally {
     loading.value = false
   }
@@ -164,7 +165,7 @@ async function handleSubmit() {
 // 发布文章
 async function handlePublish() {
   if (!form.title) {
-    alert('请填写文章标题')
+    toast.value?.warning('请填写文章标题')
     return
   }
 
@@ -187,11 +188,11 @@ async function handlePublish() {
       id = res.data?.id
     }
 
-    alert('发布成功')
+    toast.value?.success('发布成功')
     editorRef.value?.clearAutoSave()
     router.push('/admin/articles')
   } catch (error) {
-    alert('发布失败')
+    toast.value?.error('发布失败')
   } finally {
     loading.value = false
   }
@@ -200,7 +201,7 @@ async function handlePublish() {
 // AI生成摘要
 async function handleGenerateSummary() {
   if (!form.content) {
-    alert('请先输入文章内容')
+    toast.value?.warning('请先输入文章内容')
     return
   }
   aiLoading.value = true
@@ -208,7 +209,7 @@ async function handleGenerateSummary() {
     const res = await generateSummary(form.content)
     form.summary = res.data
   } catch (error) {
-    alert('生成摘要失败: ' + (error.message || '请检查DeepSeek API配置'))
+    toast.value?.error('生成摘要失败: ' + (error.message || '请检查DeepSeek API配置'))
   } finally {
     aiLoading.value = false
   }
@@ -217,7 +218,7 @@ async function handleGenerateSummary() {
 // AI生成标签
 async function handleGenerateTags() {
   if (!form.content) {
-    alert('请先输入文章内容')
+    toast.value?.warning('请先输入文章内容')
     return
   }
   aiLoading.value = true
@@ -225,7 +226,7 @@ async function handleGenerateTags() {
     const res = await generateTags(form.content)
     form.tags = res.data.join(', ')
   } catch (error) {
-    alert('生成标签失败: ' + (error.message || '请检查DeepSeek API配置'))
+    toast.value?.error('生成标签失败: ' + (error.message || '请检查DeepSeek API配置'))
   } finally {
     aiLoading.value = false
   }

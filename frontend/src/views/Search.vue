@@ -65,13 +65,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { searchArticlesByKeyword, searchArticlesByTag } from '../api/article'
 import ArticleCard from '../components/ArticleCard.vue'
 
 const route = useRoute()
 const router = useRouter()
+const toast = inject('toast')
 
 const searchType = ref('keyword')
 const searchQuery = ref('')
@@ -111,7 +112,7 @@ async function handleSearch() {
     total.value = res.data.total || 0
   } catch (error) {
     console.error('搜索失败:', error)
-    alert('搜索失败，请重试')
+    toast.value?.error('搜索失败，请重试')
   } finally {
     loading.value = false
   }

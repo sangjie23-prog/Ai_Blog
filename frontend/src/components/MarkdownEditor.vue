@@ -164,6 +164,9 @@ import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import { uploadImage } from '../api/admin/upload'
+import { inject } from 'vue'
+
+const toast = inject('toast')
 
 const props = defineProps({
   modelValue: {
@@ -366,13 +369,13 @@ function handleFileSelect(event) {
 async function uploadAndInsertImage(file) {
   const maxSize = 10 * 1024 * 1024
   if (file.size > maxSize) {
-    alert('图片大小不能超过 10MB')
+    toast.value?.error('图片大小不能超过 10MB')
     return
   }
 
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp']
   if (!allowedTypes.includes(file.type)) {
-    alert('仅支持 JPG、PNG、GIF、WebP、BMP 格式的图片')
+    toast.value?.error('仅支持 JPG、PNG、GIF、WebP、BMP 格式的图片')
     return
   }
 
@@ -385,8 +388,9 @@ async function uploadAndInsertImage(file) {
     const alt = file.name.replace(/\.[^/.]+$/, '')
     insertText(`![${alt}](${imageUrl})`)
     uploadProgress.value = 100
+    toast.value?.success('图片上传成功')
   } catch (error) {
-    alert('图片上传失败: ' + (error.message || '未知错误'))
+    toast.value?.error('图片上传失败: ' + (error.message || '未知错误'))
   } finally {
     uploading.value = false
     setTimeout(() => {
