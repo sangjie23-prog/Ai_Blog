@@ -87,7 +87,7 @@ public class ImageUploadController {
             File destFile = new File(fullUploadPath + "/" + newFilename);
             file.transferTo(destFile);
 
-            String imageUrl = "/api/uploads/images/" + datePath + "/" + newFilename;
+            String imageUrl = "/api/uploads/" + datePath + "/" + newFilename;
 
             return Result.success("图片上传成功", imageUrl);
         } catch (IOException e) {
