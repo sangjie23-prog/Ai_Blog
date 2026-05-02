@@ -29,6 +29,9 @@ public class Article {
     /** 状态：0-草稿，1-已发布 */
     private Integer status;
 
+    /** 是否置顶：0-否，1-是 */
+    private Integer isTop;
+
     /** 阅读量 */
     private Integer viewCount;
 
@@ -65,6 +68,8 @@ public class Article {
     public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
+    public Integer getIsTop() { return isTop; }
+    public void setIsTop(Integer isTop) { this.isTop = isTop; }
     public Integer getViewCount() { return viewCount; }
     public void setViewCount(Integer viewCount) { this.viewCount = viewCount; }
     public Integer getLikeCount() { return likeCount; }

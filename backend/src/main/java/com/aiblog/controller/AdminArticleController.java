@@ -70,6 +70,9 @@ public class AdminArticleController {
         if (article.getDeleted() == null) {
             article.setDeleted(0);
         }
+        if (article.getIsTop() == null) {
+            article.setIsTop(0); // 默认不置顶
+        }
         articleService.save(article);
         return Result.success("创建成功", null);
     }
@@ -133,5 +136,37 @@ public class AdminArticleController {
         article.setStatus(0); // 0-草稿
         articleService.updateById(article);
         return Result.success("已撤回为草稿", null);
+    }
+
+    /**
+     * 设置文章置顶
+     * @param id 文章ID
+     * @return 置顶结果
+     */
+    @PostMapping("/{id}/top")
+    public Result<Void> setTop(@PathVariable Long id) {
+        Article article = articleService.getArticleById(id);
+        if (article == null) {
+            return Result.error(404, "文章不存在");
+        }
+        article.setIsTop(1);
+        articleService.updateById(article);
+        return Result.success("置顶成功", null);
+    }
+
+    /**
+     * 取消文章置顶
+     * @param id 文章ID
+     * @return 取消置顶结果
+     */
+    @PostMapping("/{id}/untop")
+    public Result<Void> unsetTop(@PathVariable Long id) {
+        Article article = articleService.getArticleById(id);
+        if (article == null) {
+            return Result.error(404, "文章不存在");
+        }
+        article.setIsTop(0);
+        articleService.updateById(article);
+        return Result.success("取消置顶成功", null);
     }
 }

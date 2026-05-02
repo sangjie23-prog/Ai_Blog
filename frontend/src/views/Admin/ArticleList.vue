@@ -22,6 +22,7 @@
           <tr>
             <th>标题</th>
             <th>状态</th>
+            <th>置顶</th>
             <th>阅读</th>
             <th>点赞</th>
             <th>创建时间</th>
@@ -36,11 +37,17 @@
                 {{ article.status === 1 ? '已发布' : '草稿' }}
               </span>
             </td>
+            <td>
+              <span v-if="article.isTop === 1" class="top-badge">置顶</span>
+              <span v-else class="normal-badge">普通</span>
+            </td>
             <td>{{ article.viewCount }}</td>
             <td>{{ article.likeCount }}</td>
             <td>{{ formatDate(article.createdAt) }}</td>
             <td class="action-cell">
               <button class="action-btn edit-btn" @click="editArticle(article.id)">编辑</button>
+              <button v-if="article.isTop === 0" class="action-btn top-btn" @click="handleSetTop(article.id)">置顶</button>
+              <button v-else class="action-btn untop-btn" @click="handleUnsetTop(article.id)">取消置顶</button>
               <button v-if="article.status === 0" class="action-btn publish-btn" @click="handlePublish(article.id)">发布</button>
               <button v-else class="action-btn unpublish-btn" @click="handleUnpublish(article.id)">撤回</button>
               <button class="action-btn delete-btn" @click="handleDelete(article.id)">删除</button>
@@ -64,7 +71,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getAdminArticles, publishArticle, unpublishArticle, deleteAdminArticle } from '../../api/admin/article'
+import { getAdminArticles, publishArticle, unpublishArticle, deleteAdminArticle, setTopArticle, unsetTopArticle } from '../../api/admin/article'
 
 const router = useRouter()
 
@@ -137,6 +144,26 @@ async function handleUnpublish(id) {
     loadArticles()
   } catch (error) {
     alert('撤回失败')
+  }
+}
+
+// 设置置顶
+async function handleSetTop(id) {
+  try {
+    await setTopArticle(id)
+    loadArticles()
+  } catch (error) {
+    alert('置顶失败')
+  }
+}
+
+// 取消置顶
+async function handleUnsetTop(id) {
+  try {
+    await unsetTopArticle(id)
+    loadArticles()
+  } catch (error) {
+    alert('取消置顶失败')
   }
 }
 
@@ -289,6 +316,26 @@ td {
   color: #e8c878;
 }
 
+.top-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  background-color: rgba(255, 71, 87, 0.25);
+  color: #ff6b7a;
+}
+
+.normal-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+  background-color: rgba(128, 128, 128, 0.25);
+  color: #999;
+}
+
 .action-cell {
   display: flex;
   gap: var(--space-sm);
@@ -324,6 +371,14 @@ td {
 
 .delete-btn {
   background-color: #f44336;
+}
+
+.top-btn {
+  background-color: #ff6b7a;
+}
+
+.untop-btn {
+  background-color: #999;
 }
 
 .empty-msg {

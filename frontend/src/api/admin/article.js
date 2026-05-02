@@ -80,3 +80,25 @@ export function unpublishArticle(id) {
     method: 'post'
   })
 }
+
+/**
+ * 设置文章置顶
+ * @param {number} id - 文章ID
+ */
+export function setTopArticle(id) {
+  return request({
+    url: `/admin/articles/${id}/top`,
+    method: 'post'
+  })
+}
+
+/**
+ * 取消文章置顶
+ * @param {number} id - 文章ID
+ */
+export function unsetTopArticle(id) {
+  return request({
+    url: `/admin/articles/${id}/untop`,
+    method: 'post'
+  })
+}

@@ -23,6 +23,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 构建查询条件
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(status != null, Article::getStatus, status)
+               .orderByDesc(Article::getIsTop)
                .orderByDesc(Article::getCreatedAt);
 
         return page(page, wrapper);
@@ -64,6 +65,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(status != null, Article::getStatus, status)
                .like(keyword != null && !keyword.isEmpty(), Article::getTitle, keyword)
+               .orderByDesc(Article::getIsTop)
                .orderByDesc(Article::getCreatedAt);
 
         return page(page, wrapper);
@@ -78,6 +80,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(status != null, Article::getStatus, status)
                .like(tag != null && !tag.isEmpty(), Article::getTags, tag)
+               .orderByDesc(Article::getIsTop)
                .orderByDesc(Article::getCreatedAt);
 
         return page(page, wrapper);

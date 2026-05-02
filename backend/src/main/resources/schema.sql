@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `article` (
     `summary` VARCHAR(500) DEFAULT NULL COMMENT '文章摘要',
     `cover_image` VARCHAR(500) DEFAULT NULL COMMENT '封面图片URL',
     `status` TINYINT NOT NULL DEFAULT 0 COMMENT '状态：0-草稿，1-已发布',
+    `is_top` TINYINT NOT NULL DEFAULT 0 COMMENT '是否置顶：0-否，1-是',
     `view_count` INT NOT NULL DEFAULT 0 COMMENT '阅读量',
     `like_count` INT NOT NULL DEFAULT 0 COMMENT '点赞数',
     `category_id` BIGINT DEFAULT NULL COMMENT '分类ID',
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS `article` (
     PRIMARY KEY (`id`),
     KEY `idx_status` (`status`),
     KEY `idx_category` (`category_id`),
-    KEY `idx_created_at` (`created_at`)
+    KEY `idx_created_at` (`created_at`),
+    KEY `idx_is_top` (`is_top`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
 
 -- 分类表

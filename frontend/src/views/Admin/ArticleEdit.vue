@@ -40,6 +40,18 @@
         </div>
       </div>
 
+      <!-- 置顶开关 -->
+      <div class="form-group">
+        <label class="top-switch-label">
+          <span>文章置顶</span>
+          <div class="switch-container" @click="toggleTop">
+            <div class="switch-track" :class="{ 'active': form.isTop }">
+              <div class="switch-thumb" :class="{ 'active': form.isTop }"></div>
+            </div>
+          </div>
+        </label>
+      </div>
+
       <!-- 富文本编辑器 -->
       <div class="form-group">
         <label>内容</label>
@@ -89,12 +101,18 @@ const form = reactive({
   content: '',
   category: '',
   tags: '',
-  status: 0
+  status: 0,
+  isTop: 0
 })
 
 const editorRef = ref(null)
 const loading = ref(false)
 const aiLoading = ref(false)
+
+// 切换置顶状态
+function toggleTop() {
+  form.isTop = form.isTop === 0 ? 1 : 0
+}
 
 // 加载文章（编辑模式）
 async function loadArticle() {
@@ -107,6 +125,7 @@ async function loadArticle() {
     form.content = article.content || ''
     form.category = article.category || ''
     form.tags = article.tags || ''
+    form.isTop = article.isTop || 0
   } catch (error) {
     alert('加载文章失败')
     router.push('/admin/articles')
@@ -324,6 +343,49 @@ onMounted(() => {
 .ai-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.top-switch-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.switch-container {
+  cursor: pointer;
+}
+
+.switch-track {
+  width: 44px;
+  height: 24px;
+  background-color: var(--border-color);
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.switch-track.active {
+  background-color: var(--accent-color);
+}
+
+.switch-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.switch-thumb.active {
+  transform: translateX(20px);
 }
 
 .form-row {

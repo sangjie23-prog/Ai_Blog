@@ -1,11 +1,15 @@
 <template>
   <article 
     class="article-card animate-slide-up" 
+    :class="{ 'top-article': article.isTop === 1 }"
     :style="{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }"
   >
     <router-link :to="`/article/${article.id}`" class="card-link">
       <div class="card-content">
-        <h2 class="card-title">{{ article.title }}</h2>
+        <div class="title-row">
+          <span v-if="article.isTop === 1" class="top-badge">置顶</span>
+          <h2 class="card-title">{{ article.title }}</h2>
+        </div>
         <p class="card-summary">{{ article.summary || extractSummary(article.content) }}</p>
         <div class="card-footer">
           <div class="card-meta">
@@ -73,6 +77,12 @@ function formatDate(dateStr) {
   position: relative;
 }
 
+.article-card.top-article {
+  border-color: var(--accent-color);
+  background-color: var(--card-bg);
+  box-shadow: 0 0 0 1px var(--accent-color);
+}
+
 .article-card:hover {
   box-shadow: var(--card-shadow-hover);
   border-color: var(--accent-color);
@@ -90,6 +100,26 @@ function formatDate(dateStr) {
 
 .card-link:hover {
   text-decoration: none;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.top-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-sm);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #ff6b7a;
+  background-color: rgba(255, 71, 87, 0.15);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  white-space: nowrap;
 }
 
 .card-content {
