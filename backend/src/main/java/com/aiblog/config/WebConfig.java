@@ -29,13 +29,15 @@ public class WebConfig implements WebMvcConfigurer {
                 // 排除登录接口
                 .excludePathPatterns("/api/auth/**")
                 // 排除前台公开接口
-                .excludePathPatterns("/api/articles/**");
+                .excludePathPatterns("/api/articles/**")
+                // 排除图片上传接口
+                .excludePathPatterns("/api/admin/upload/**");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String absolutePath = new java.io.File(uploadPath).getAbsolutePath();
-        registry.addResourceHandler("/uploads/**")
+        registry.addResourceHandler("/api/uploads/**")
                 .addResourceLocations("file:" + absolutePath + "/")
                 .setCachePeriod(86400);
     }

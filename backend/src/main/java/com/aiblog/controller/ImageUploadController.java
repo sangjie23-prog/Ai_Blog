@@ -1,22 +1,19 @@
 package com.aiblog.controller;
 
-import com.aiblog.common.JwtUtil;
 import com.aiblog.common.Result;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin")
 public class ImageUploadController {
-
-    @Value("${jwt.secret}")
-    private String jwtSecret;
 
     @Value("${upload.path:uploads/images}")
     private String uploadPath;
@@ -29,12 +26,7 @@ public class ImageUploadController {
     };
 
     @PostMapping("/upload/image")
-    public Result<?> uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        String token = extractToken(request);
-        if (token == null || !JwtUtil.validateToken(token, jwtSecret)) {
-            return Result.error("未登录或登录已过期");
-        }
-
+    public Result<?> uploadImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return Result.error("请选择要上传的图片");
         }
@@ -68,7 +60,7 @@ public class ImageUploadController {
 
             String newFilename = UUID.randomUUID().toString().replace("-", "") + extension;
 
-            String datePath = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date());
+            String datePath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             String fullUploadPath = uploadPath + "/" + datePath;
 
             File uploadDir = new File(fullUploadPath);
@@ -79,7 +71,7 @@ public class ImageUploadController {
             File destFile = new File(fullUploadPath + "/" + newFilename);
             file.transferTo(destFile);
 
-            String imageUrl = "/uploads/images/" + datePath + "/" + newFilename;
+            String imageUrl = "/api/uploads/images/" + datePath + "/" + newFilename;
 
             return Result.success("图片上传成功", imageUrl);
         } catch (IOException e) {
